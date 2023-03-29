@@ -1,4 +1,6 @@
 package tim2.cataloging.tim2.repository;
 
-public interface BookRepository {
+import tim2.cataloging.tim2.models.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
+public interface BookRepository extends JpaRepository<Book, Long>{
 }
