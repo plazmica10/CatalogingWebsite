@@ -7,6 +7,7 @@ import java.util.List;
 
 @Entity
 public class Shelf implements Serializable {
+    //todo-pitati sta je bolje
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,5 +19,8 @@ public class Shelf implements Serializable {
     private boolean isPrimary;
 
     @OneToMany
+    @JoinTable(name = "item_on_shelf",
+            joinColumns = @JoinColumn(name = "shelf_id"),
+            inverseJoinColumns = @JoinColumn(name = "shelfitem_id"))
     private List<ShelfItem> shelfItems;
 }

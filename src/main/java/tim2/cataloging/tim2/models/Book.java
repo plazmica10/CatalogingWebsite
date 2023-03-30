@@ -19,13 +19,14 @@ public class Book implements Serializable{
     private Date date;
 
     @Column
-    private String pages;
+    private int pages;
 
     @Column
     private String description;
-    @ManyToOne
-    private Genre genre;
 
     @Column
     private int rating;
+
+    @ManyToOne
+    private Genre genre;
 }
