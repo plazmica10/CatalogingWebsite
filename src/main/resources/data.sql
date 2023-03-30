@@ -1,0 +1,1 @@
+INSERT INTO SHELF_ITEM (review, book) VALUES ( 'just', 'temporary' );
