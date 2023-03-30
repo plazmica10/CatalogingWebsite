@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -35,18 +36,17 @@ public class User implements Serializable{
 
     @Column
     private String description;
+
+    //todo- pitati
     private enum Role {READER,AUTHOR,ADMIN}
 
     @Column
     private Role role;
 
-    //    public boolean isActive(){
-//        if(this.role == Author){
-//          if(Aktivacija.status == odobren){
-//              return true;
-//          }else{
-//              return false;
-//          }
-//        }
-//    }
+//todo - pitati
+//    @Column
+//    public boolean isActive;
+//
+//    @OneToMany
+//    private List<Book> books;
 }

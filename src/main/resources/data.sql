@@ -14,8 +14,10 @@ INSERT INTO REVIEW (rating, comment, date, user_id) VALUES ( 5, 'This is a great
 INSERT INTO BOOK (isbn, title, photo, date, pages, description, genre_id, rating) VALUES ( '0747532745', 'Harry Potter and the Philosopher''s Stone', 'photo', DATE '2000-3-25', 223, 'description', 1, 5 );
 INSERT INTO BOOK (isbn, title, photo, date, pages, description, genre_id, rating) VALUES ( '0345339738', 'The Fellowship of the Ring', 'photo', DATE '1954-7-29', 423, 'description', 1, 5 );
 
-INSERT INTO SHELF_ITEM (review_id, book_isbn) VALUES ( 1, '0747532745' );
+INSERT INTO SHELF_ITEM (book_isbn) VALUES ('0747532745' );
+
+INSERT INTO ITEM_REVIEWS(shelf_item_id, review_id) VALUES (1, 1);
 
 INSERT INTO SHELF (name, is_primary) VALUES ( 'My Shelf', 1 );
 
-INSERT INTO SHELF_SHELF_ITEMS (shelf_id, shelf_items_id) VALUES ( 1, 1 );
+INSERT INTO ITEM_ON_SHELF (shelf_id, shelfitem_id) VALUES ( 1, 1 );
