@@ -10,9 +10,9 @@ public class ShelfItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String review;
+    @OneToOne
+    private Review review;
 
-    @Column
-    private String book;
+    @ManyToOne
+    private Book book;
 }

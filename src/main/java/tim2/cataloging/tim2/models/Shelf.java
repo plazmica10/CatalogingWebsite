@@ -3,6 +3,7 @@ package tim2.cataloging.tim2.models;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Shelf implements Serializable {
@@ -16,5 +17,6 @@ public class Shelf implements Serializable {
     @Column
     private boolean isPrimary;
 
-    // todo povezati sa ShelfItem
+    @OneToMany
+    private List<ShelfItem> shelfItems;
 }
