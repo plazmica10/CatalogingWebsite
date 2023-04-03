@@ -7,8 +7,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "users")
-public class User implements Serializable{
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -37,16 +38,8 @@ public class User implements Serializable{
     @Column
     private String description;
 
-    //todo- pitati
-    private enum Role {READER,AUTHOR,ADMIN}
+    private enum Role {READER, AUTHOR, ADMIN}
 
     @Column
     private Role role;
-
-//todo - pitati
-//    @Column
-//    public boolean isActive;
-//
-//    @OneToMany
-//    private List<Book> books;
 }
