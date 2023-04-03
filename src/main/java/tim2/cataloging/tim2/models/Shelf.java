@@ -7,7 +7,6 @@ import java.util.List;
 
 @Entity
 public class Shelf implements Serializable {
-    //todo-pitati sta je bolje
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
