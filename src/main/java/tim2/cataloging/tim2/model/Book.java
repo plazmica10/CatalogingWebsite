@@ -1,4 +1,4 @@
-package tim2.cataloging.tim2.models;
+package tim2.cataloging.tim2.model;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
