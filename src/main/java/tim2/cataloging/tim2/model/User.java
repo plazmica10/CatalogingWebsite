@@ -1,7 +1,6 @@
 package tim2.cataloging.tim2.model;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -37,8 +36,6 @@ public class User implements Serializable {
     @Column
     private String description;
 
-    private enum Role {READER, AUTHOR, ADMIN}
-
     @Column
-    private Role role;
+    private ROLE role;
 }

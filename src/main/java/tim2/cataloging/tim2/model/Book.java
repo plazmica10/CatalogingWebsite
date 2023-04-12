@@ -7,6 +7,10 @@ import java.util.Date;
 @Entity
 public class Book implements Serializable{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
     private String ISBN;
 
     @Column
