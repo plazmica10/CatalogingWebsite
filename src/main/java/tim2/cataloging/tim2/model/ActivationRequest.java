@@ -5,10 +5,6 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-enum Status {
-    PENDING, APPROVED, DENIED
-}
-
 @Entity
 public class ActivationRequest implements Serializable {
     @Id
@@ -27,6 +23,6 @@ public class ActivationRequest implements Serializable {
     @Column
     private Date date;
 
-    @Enumerated(EnumType.ORDINAL) // todo fix this
-    private Status status;
+    @Enumerated(EnumType.ORDINAL)
+    private STATUS status;
 }
