@@ -3,6 +3,7 @@ package tim2.cataloging.tim2.model;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -38,4 +39,8 @@ public class User implements Serializable {
 
     @Column
     private ROLE role;
+
+    @OneToMany
+    private List<Shelf> shelves;
+
 }

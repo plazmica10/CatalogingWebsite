@@ -25,4 +25,7 @@ public class ActivationRequest implements Serializable {
 
     @Enumerated(EnumType.ORDINAL)
     private STATUS status;
+
+    @OneToOne
+    private User user;
 }
