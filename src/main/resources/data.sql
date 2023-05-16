@@ -24,5 +24,6 @@ INSERT INTO SHELF_ITEM (book_id) VALUES ( 1 );
 INSERT INTO ITEM_REVIEWS(shelf_item_id, review_id) VALUES (1, 1);
 
 INSERT INTO SHELF (name, is_primary) VALUES ( 'My Shelf', 1 );
+INSERT INTO SHELF (name, is_primary) VALUES ( 'PrimarnaPolica', 0 );
 
 INSERT INTO ITEM_ON_SHELF (shelf_id, shelfitem_id) VALUES ( 1, 1 );
