@@ -45,4 +45,7 @@ public class Book implements Serializable{
         this.rating = rating;
         this.genre = genre;
     }
+    public Book(){
+
+    }
 }
