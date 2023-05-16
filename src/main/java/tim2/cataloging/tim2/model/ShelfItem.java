@@ -19,4 +19,37 @@ public class ShelfItem implements Serializable {
 
     @ManyToOne
     private Book book;
+
+    public ShelfItem() {
+    }
+
+    public ShelfItem(Long id, List<Review> reviews, Book book) {
+        this.id = id;
+        this.reviews = reviews;
+        this.book = book;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
 }
