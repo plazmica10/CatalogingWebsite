@@ -33,4 +33,16 @@ public class Book implements Serializable{
 
     @ManyToOne
     private Genre genre;
+
+    public Book(Long id, String ISBN, String title, String photo, Date date, int pages, String description, int rating, Genre genre) {
+        this.id = id;
+        this.ISBN = ISBN;
+        this.title = title;
+        this.photo = photo;
+        this.date = date;
+        this.pages = pages;
+        this.description = description;
+        this.rating = rating;
+        this.genre = genre;
+    }
 }
