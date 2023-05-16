@@ -22,4 +22,54 @@ public class Review implements Serializable {
 
     @ManyToOne
     private User user;
+
+    public Review(){
+
+    }
+    public Review(Long id, int rating, String comment, Date date) {
+        this.id = id;
+        this.rating = rating;
+        this.comment = comment;
+        this.date = date;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

@@ -13,6 +13,7 @@ INSERT INTO USERS (username, name, surname, email, password, date, photo, descri
 INSERT INTO AUTHORS (id, is_active) VALUES ( 2, 1 );
 
 INSERT INTO REVIEW (rating, comment, date, user_id) VALUES ( 5, 'Iz good', DATE '2022-4-16', 1 );
+INSERT INTO REVIEW (rating, comment, date, user_id) VALUES ( 10, 'Shit slaps', DATE '2023-7-7', 2 );
 
 INSERT INTO BOOK (isbn, title, photo, date, pages, description, genre_id, rating) VALUES ( '0747532745', 'Harry Potter and the Philosopher''s Stone', 'photo', DATE '2000-3-25', 223, 'description', 1, 5 );
 INSERT INTO BOOK (isbn, title, photo, date, pages, description, genre_id, rating) VALUES ( '0345339738', 'The Fellowship of the Ring', 'photo', DATE '1954-7-29', 423, 'description', 1, 5 );
