@@ -1,5 +1,5 @@
 package tim2.cataloging.tim2.model;
 
-enum ROLE {
+public enum ROLE {
     READER, AUTHOR, ADMIN
 }
