@@ -120,4 +120,7 @@ public class Book implements Serializable{
     public void setGenre(Genre genre) {
         this.genre = genre;
     }
+    public Book(){
+
+    }
 }
