@@ -1,5 +1,8 @@
 package tim2.cataloging.tim2.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tim2.cataloging.tim2.model.Shelf;
@@ -12,6 +15,9 @@ public class ShelfService {
     @Autowired
     private ShelfRepository shelfRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public Shelf findOne(Long id){
         return shelfRepository.findById(id).orElse(null);
     }
@@ -23,5 +29,12 @@ public class ShelfService {
     }
     public void deleteById(Long id){
         shelfRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteByUserId(Long userId) {
+        entityManager.createQuery("DELETE FROM Shelf s WHERE s.user.id = :userId")
+            .setParameter("userId", userId)
+            .executeUpdate();
     }
 }

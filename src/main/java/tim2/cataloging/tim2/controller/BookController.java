@@ -61,7 +61,7 @@ public class BookController {
         if (bookService.findOne(id) == null)
             return ResponseEntity.badRequest().body("Book with id: " + id + " does not exist!");
         else {
-            bookService.delete(id);
+            bookService.deleteById(id);
             return ResponseEntity.ok("Successfully deleted book with id: " + id);
         }
     }

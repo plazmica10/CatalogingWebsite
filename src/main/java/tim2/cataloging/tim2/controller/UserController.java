@@ -1,14 +1,23 @@
 package tim2.cataloging.tim2.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tim2.cataloging.tim2.dto.LoginDto;
 import tim2.cataloging.tim2.dto.UserDto;
+import tim2.cataloging.tim2.model.Book;
+import tim2.cataloging.tim2.model.Review;
 import tim2.cataloging.tim2.model.User;
+import tim2.cataloging.tim2.model.ROLE;
+import tim2.cataloging.tim2.service.AuthorService;
+import tim2.cataloging.tim2.service.BookService;
+import tim2.cataloging.tim2.service.ReviewService;
 import tim2.cataloging.tim2.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/users")
@@ -16,6 +25,15 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
+    private AuthorService authorService;
+
+    @Autowired
+    private BookService bookService;
 
     // READ ALL
     @GetMapping("")
@@ -57,12 +75,63 @@ public class UserController {
 
     // DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<String> deleteUser(@PathVariable(name = "id") Long id, HttpSession session) {
+        User loggedUser = (User) session.getAttribute("user");
+        if (loggedUser == null)
+            return ResponseEntity.badRequest().body("User not logged in!");
+
+        User user = userService.findOne(id);
         if (userService.findOne(id) == null)
             return ResponseEntity.badRequest().body("User with id: " + id + " does not exist!");
+
+        if (!Objects.equals(loggedUser.getUsername(), user.getUsername()))
+            return ResponseEntity.badRequest().body("Forbidden");
         else {
+            // Delete reviews the use made
+            List<Review> reviews = reviewService.findAll();
+            for (Review review : reviews) {
+                if (Objects.equals(review.getUser().getUsername(), user.getUsername()))
+                    reviewService.deleteById(review.getId());
+            }
+            // If user is author, delete author and authors books
+            if (user.getRole() == ROLE.AUTHOR) {
+                List<Book> books = authorService.findOne(id).getBooks();
+                for (Book book : books) {
+                    bookService.deleteById(book.getId());
+                }
+                authorService.deleteById(id);
+            }
+
+            //
+
+
+
             userService.delete(id);
             return ResponseEntity.ok("Successfully deleted user with id: " + id);
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpSession session) {
+        if (loginDto.getUsername().isEmpty() || loginDto.getPassword().isEmpty())
+            return ResponseEntity.badRequest().body("Invalid login data");
+
+        User loggedUser = userService.login(loginDto.getUsername(), loginDto.getPassword());
+        if (loggedUser == null)
+            return ResponseEntity.notFound().build();
+
+        session.setAttribute("user", loggedUser);
+        return ResponseEntity.ok("Successfully logged in!");
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpSession session) {
+        User loggedUser = (User) session.getAttribute("user");
+
+        if (loggedUser == null)
+            return ResponseEntity.badRequest().body("Forbidden");
+
+        session.invalidate();
+        return ResponseEntity.ok("Successfully logged out");
     }
 }
