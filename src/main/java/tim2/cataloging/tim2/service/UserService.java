@@ -29,4 +29,11 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public User login(String username, String password) {
+        User user = userRepository.getByUsername(username);
+        if(user == null || !user.getPassword().equals(password))
+            return null;
+        return  user;
+    }
+
 }
