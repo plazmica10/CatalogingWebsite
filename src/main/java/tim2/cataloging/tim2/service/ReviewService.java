@@ -23,12 +23,4 @@ public class ReviewService {
     public Review save(Review review){ return reviewRepository.save(review); }
     public void deleteById(Long id){ reviewRepository.deleteById(id);}
 
-    public List<Review> findByUserId(Long id){ return reviewRepository.findByUserId(id); }
-
-    @Transactional
-    public void deleteAllByUserId(Long userId) {
-        entityManager.createQuery("DELETE FROM Review r WHERE r.user.id = :userId")
-            .setParameter("userId", userId)
-            .executeUpdate();
-    }
 }

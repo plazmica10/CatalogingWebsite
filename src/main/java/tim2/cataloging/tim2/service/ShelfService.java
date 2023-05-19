@@ -15,9 +15,6 @@ public class ShelfService {
     @Autowired
     private ShelfRepository shelfRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     public Shelf findOne(Long id){
         return shelfRepository.findById(id).orElse(null);
     }
@@ -31,10 +28,4 @@ public class ShelfService {
         shelfRepository.deleteById(id);
     }
 
-    @Transactional
-    public void deleteByUserId(Long userId) {
-        entityManager.createQuery("DELETE FROM Shelf s WHERE s.user.id = :userId")
-            .setParameter("userId", userId)
-            .executeUpdate();
-    }
 }

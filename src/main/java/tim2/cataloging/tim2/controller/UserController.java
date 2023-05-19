@@ -73,44 +73,6 @@ public class UserController {
         }
     }
 
-    // DELETE
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable(name = "id") Long id, HttpSession session) {
-        User loggedUser = (User) session.getAttribute("user");
-        if (loggedUser == null)
-            return ResponseEntity.badRequest().body("User not logged in!");
-
-        User user = userService.findOne(id);
-        if (userService.findOne(id) == null)
-            return ResponseEntity.badRequest().body("User with id: " + id + " does not exist!");
-
-        if (!Objects.equals(loggedUser.getUsername(), user.getUsername()))
-            return ResponseEntity.badRequest().body("Forbidden");
-        else {
-            // Delete reviews the use made
-            List<Review> reviews = reviewService.findAll();
-            for (Review review : reviews) {
-                if (Objects.equals(review.getUser().getUsername(), user.getUsername()))
-                    reviewService.deleteById(review.getId());
-            }
-            // If user is author, delete author and authors books
-            if (user.getRole() == ROLE.AUTHOR) {
-                List<Book> books = authorService.findOne(id).getBooks();
-                for (Book book : books) {
-                    bookService.deleteById(book.getId());
-                }
-                authorService.deleteById(id);
-            }
-
-            //
-
-
-
-            userService.delete(id);
-            return ResponseEntity.ok("Successfully deleted user with id: " + id);
-        }
-    }
-
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpSession session) {
         if (loginDto.getUsername().isEmpty() || loginDto.getPassword().isEmpty())
