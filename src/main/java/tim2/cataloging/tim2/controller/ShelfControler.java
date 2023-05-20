@@ -1,12 +1,15 @@
 package tim2.cataloging.tim2.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tim2.cataloging.tim2.dto.ShelfDto;
 import tim2.cataloging.tim2.model.Shelf;
+import tim2.cataloging.tim2.model.User;
 import tim2.cataloging.tim2.service.ShelfService;
+import tim2.cataloging.tim2.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +23,13 @@ public class ShelfControler {
 
     //READ ALL
     @GetMapping("")
-    public ResponseEntity<List<ShelfDto>> getShelves(){
-        List<Shelf> shelves = shelfService.findAll();
+    public ResponseEntity<List<ShelfDto>> getShelves(HttpSession session){
+        User loggedUser = (User) session.getAttribute("user");
+        if (loggedUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        List<Shelf> shelves = loggedUser.getShelves();
 
         List<ShelfDto> dtos = new ArrayList<>();
         for(Shelf s : shelves){

@@ -12,6 +12,7 @@ import java.util.List;
 
 @Service
 public class ShelfService {
+
     @Autowired
     private ShelfRepository shelfRepository;
 
