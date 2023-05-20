@@ -8,14 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import tim2.cataloging.tim2.dto.LoginDto;
 import tim2.cataloging.tim2.dto.RegisterDto;
 import tim2.cataloging.tim2.dto.UserDto;
-import tim2.cataloging.tim2.model.Book;
-import tim2.cataloging.tim2.model.Review;
-import tim2.cataloging.tim2.model.User;
-import tim2.cataloging.tim2.model.ROLE;
-import tim2.cataloging.tim2.service.AuthorService;
-import tim2.cataloging.tim2.service.BookService;
-import tim2.cataloging.tim2.service.ReviewService;
-import tim2.cataloging.tim2.service.UserService;
+import tim2.cataloging.tim2.model.*;
+import tim2.cataloging.tim2.service.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +23,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private ReviewService reviewService;
-
-    @Autowired
-    private AuthorService authorService;
-
-    @Autowired
-    private BookService bookService;
+    private ShelfService shelfService;
 
     // READ ALL
     @GetMapping("")
@@ -93,7 +81,7 @@ public class UserController {
         User loggedUser = (User) session.getAttribute("user");
 
         if (loggedUser == null)
-            return ResponseEntity.badRequest().body("Forbidden");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         session.invalidate();
         return ResponseEntity.ok("Successfully logged out");
@@ -119,9 +107,27 @@ public class UserController {
             user.setEmail(userRequest.getEmail());
             user.setPassword(userRequest.getPassword());
             user.setRole(ROLE.READER);
+
             User newUser = userService.register(user);
             if(newUser == null)
                 return ResponseEntity.badRequest().body("Failed to register user: " + userRequest.getUsername());
+
+
+            Shelf wantToRead = new Shelf("Want to read", true);
+            shelfService.save(wantToRead);
+            Shelf currentlyReading = new Shelf("Currently reading", true);
+            shelfService.save(currentlyReading);
+            Shelf read = new Shelf("Read", true);
+            shelfService.save(read);
+
+            List<Shelf> shelves = new ArrayList<>();
+            shelves.add(wantToRead);
+            shelves.add(currentlyReading);
+            shelves.add(read);
+
+            newUser.setShelves(shelves);
+            userService.save(newUser);
+
             session.setAttribute("user", newUser);
             return ResponseEntity.ok("User registered successfully!");
         } catch (Exception e) {
