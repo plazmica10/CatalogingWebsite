@@ -2,9 +2,11 @@ package tim2.cataloging.tim2.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tim2.cataloging.tim2.dto.LoginDto;
+import tim2.cataloging.tim2.dto.RegisterDto;
 import tim2.cataloging.tim2.dto.UserDto;
 import tim2.cataloging.tim2.model.Book;
 import tim2.cataloging.tim2.model.Review;
@@ -95,5 +97,35 @@ public class UserController {
 
         session.invalidate();
         return ResponseEntity.ok("Successfully logged out");
+    }
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody RegisterDto userRequest,HttpSession session){
+        User loggedUser = (User) session.getAttribute("user");
+        if(loggedUser != null){
+            return ResponseEntity.badRequest().body("You are already logged in!");
+        }
+        try {
+            User user = userService.findByEmail(userRequest.getEmail());
+            if (user != null)
+                return ResponseEntity.badRequest().body("User with email: " + userRequest.getEmail() + " already exists!");
+            user = userService.findByUsername(userRequest.getUsername());
+            if (user != null)
+                return ResponseEntity.badRequest().body("User with username: " + userRequest.getUsername() + " already exists!");
+
+            user = new User();
+            user.setName(userRequest.getName());
+            user.setSurname(userRequest.getSurname());
+            user.setUsername(userRequest.getUsername());
+            user.setEmail(userRequest.getEmail());
+            user.setPassword(userRequest.getPassword());
+            user.setRole(ROLE.READER);
+            User newUser = userService.register(user);
+            if(newUser == null)
+                return ResponseEntity.badRequest().body("Failed to register user: " + userRequest.getUsername());
+            session.setAttribute("user", newUser);
+            return ResponseEntity.ok("User registered successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register user: " + e.getMessage());
+        }
     }
 }

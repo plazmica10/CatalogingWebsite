@@ -20,7 +20,12 @@ public class UserService {
     public User findOne(Long id) {
         return userRepository.findById(id).orElse(null);
     }
-
+    public User findByEmail(String email) {
+        return userRepository.getByEmail(email);
+    }
+    public User findByUsername(String username) {
+        return userRepository.getByUsername(username);
+    }
     public User save(User user) {
         return userRepository.save(user);
     }
@@ -34,6 +39,9 @@ public class UserService {
         if(user == null || !user.getPassword().equals(password))
             return null;
         return  user;
+    }
+    public User register(User user) {
+        return userRepository.save(user);
     }
 
 }
