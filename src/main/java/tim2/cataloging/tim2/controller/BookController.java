@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tim2.cataloging.tim2.dto.BookDto;
-import tim2.cataloging.tim2.model.Book;
-import tim2.cataloging.tim2.model.ROLE;
-import tim2.cataloging.tim2.model.ShelfItem;
-import tim2.cataloging.tim2.model.User;
+import tim2.cataloging.tim2.model.*;
 import tim2.cataloging.tim2.service.BookService;
 import tim2.cataloging.tim2.service.ShelfItemService;
 
@@ -48,12 +45,26 @@ public class BookController {
 
     // CREATE
     @PostMapping("")
-    public Book saveBook(@RequestBody Book book) {
-        return this.bookService.save(book);
+    public ResponseEntity<String> saveBook(@RequestBody Book book,HttpSession session){
+        User loggedUser = (User) session.getAttribute("user");
+        if (loggedUser == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not logged in!");
+        if (loggedUser.getRole() != ROLE.ADMIN && loggedUser.getRole() != ROLE.AUTHOR)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not authorized to add books!");
+
+        bookService.save(book);
+        return ResponseEntity.ok("Book added successfully");
     }
 
+    //UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book) {
+    public ResponseEntity<String> updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book, HttpSession session) {
+        User loggedUser = (User) session.getAttribute("user");
+        if (loggedUser == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not logged in!");
+        if (loggedUser.getRole() != ROLE.ADMIN && loggedUser.getRole() != ROLE.AUTHOR)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not authorized to update books!");
+        //Treba proveriti da li je knjigu napisao autor koji je ulogovan
         Book existingBook = bookService.findOne(id);
         if (existingBook == null)
             return ResponseEntity.badRequest().body("Book with id: " + id + " does not exist!");

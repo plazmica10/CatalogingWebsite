@@ -1,5 +1,6 @@
 package tim2.cataloging.tim2.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tim2.cataloging.tim2.dto.GenreDto;
 import tim2.cataloging.tim2.model.Genre;
+import tim2.cataloging.tim2.model.ROLE;
+import tim2.cataloging.tim2.model.User;
 import tim2.cataloging.tim2.service.GenreService;
 
 import java.util.ArrayList;
@@ -39,8 +42,16 @@ public class GenreController {
 
     //CREATE
     @PostMapping("")
-    public Genre saveGenre(@RequestBody Genre genre){
-        return genreService.save(genre);
+    public ResponseEntity<String> saveGenre(@RequestBody Genre genre, HttpSession session){
+        User loggedUser = (User) session.getAttribute("user");
+        if (loggedUser == null)
+            return ResponseEntity.badRequest().body("You must be logged in to add genres");
+
+        if(loggedUser.getRole() != ROLE.ADMIN)
+            return ResponseEntity.badRequest().body("Only admin can add genres");
+
+        genreService.save(genre);
+        return ResponseEntity.ok("Genre added successfully");
     }
 
     //UPDATE
