@@ -9,7 +9,6 @@ INSERT INTO ACTIVATION_REQUEST (email, phone, message, date, status) VALUES ( 'e
 
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'test', 'John', 'Doe', 'john@gmail.com', '123', DATE '1969-4-20', 'photo', 'opis', 0 );
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'daisyMeRollin', 'Joanne', 'Rowling', 'misBigJ@gmail.com', 'pass123', DATE '1965-7-31', 'photo', 'Tot G', 1 );
-
 INSERT INTO AUTHORS (id, is_active) VALUES ( 2, 1 );
 
 INSERT INTO REVIEW (rating, comment, date, user_id) VALUES ( 5, 'Iz good', DATE '2022-4-16', 1 );
