@@ -17,7 +17,7 @@ public class ShelfItem implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "review_id"))
     private List<Review> reviews;
 
-    @ManyToOne
+    @OneToOne
     private Book book;
 
     public ShelfItem() {

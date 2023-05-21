@@ -1,11 +1,17 @@
 package tim2.cataloging.tim2.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tim2.cataloging.tim2.dto.BookDto;
 import tim2.cataloging.tim2.model.Book;
+import tim2.cataloging.tim2.model.ROLE;
+import tim2.cataloging.tim2.model.ShelfItem;
+import tim2.cataloging.tim2.model.User;
 import tim2.cataloging.tim2.service.BookService;
+import tim2.cataloging.tim2.service.ShelfItemService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +22,9 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private ShelfItemService shelfItemService;
 
     // READ ALL
     @GetMapping("")
@@ -57,7 +66,15 @@ public class BookController {
 
     // DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBook(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<String> deleteBook(@PathVariable(name = "id") Long id, HttpSession session) {
+        User loggedUser = (User) session.getAttribute("user");
+        if (loggedUser == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (loggedUser.getRole() != ROLE.ADMIN)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not authorized to delete books!");
+
+        ShelfItem shelfItem = shelfItemService.findByBookId(id);
+
         if (bookService.findOne(id) == null)
             return ResponseEntity.badRequest().body("Book with id: " + id + " does not exist!");
         else {
