@@ -151,7 +151,7 @@ public class BookController {
 
         shelfItemService.deleteById(shelfItem.getId());
 
-        // TODO delete book from AUTHORS_BOOKS table
+        // TODO delete book from AUTHORS_BOOKS table - check if done
         List<Author> authors = authorService.findAll();
         for (Author a : authors) {
             a.getBooks().remove(bookService.findOne(id));

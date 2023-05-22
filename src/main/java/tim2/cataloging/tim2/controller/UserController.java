@@ -13,7 +13,6 @@ import tim2.cataloging.tim2.service.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/users")
@@ -51,6 +50,7 @@ public class UserController {
         return this.userService.save(user);
     }
 
+    // UPDATE
     @PutMapping("/{id}")
     public ResponseEntity<String> updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
         User existingUser = userService.findOne(id);
@@ -63,12 +63,17 @@ public class UserController {
         }
     }
 
+    // LOGIN
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpSession session) {
-        if (loginDto.getUsername().isEmpty() || loginDto.getPassword().isEmpty())
+        User user = (User) session.getAttribute("user");
+        if (user != null)
+            return ResponseEntity.badRequest().body("You are already logged in!");
+
+        if (loginDto.getEmail().isEmpty() || loginDto.getPassword().isEmpty())
             return ResponseEntity.badRequest().body("Invalid login data");
 
-        User loggedUser = userService.login(loginDto.getUsername(), loginDto.getPassword());
+        User loggedUser = userService.login(loginDto.getEmail(), loginDto.getPassword());
         if (loggedUser == null)
             return ResponseEntity.notFound().build();
 
@@ -76,6 +81,7 @@ public class UserController {
         return ResponseEntity.ok("Successfully logged in!");
     }
 
+    // LOGOUT
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
@@ -86,6 +92,8 @@ public class UserController {
         session.invalidate();
         return ResponseEntity.ok("Successfully logged out");
     }
+
+    // REGISTER
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody RegisterDto userRequest,HttpSession session){
         User loggedUser = (User) session.getAttribute("user");
