@@ -35,8 +35,8 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User login(String username, String password) {
-        User user = userRepository.getByUsername(username);
+    public User login(String email, String password) {
+        User user = userRepository.getByEmail(email);
         if(user == null || !user.getPassword().equals(password))
             return null;
         return  user;

@@ -71,6 +71,7 @@ public class ActivationRequestController {
         activationRequest.setPhone(request.getPhone());
         activationRequest.setDate(date);
         requestService.save(activationRequest);
+
         return ResponseEntity.ok("Request sent!");
     }
     @DeleteMapping("/{id}")

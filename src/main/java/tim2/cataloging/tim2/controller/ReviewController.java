@@ -1,12 +1,16 @@
 package tim2.cataloging.tim2.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tim2.cataloging.tim2.dto.ReviewDto;
 import tim2.cataloging.tim2.model.Review;
 import tim2.cataloging.tim2.service.ReviewService;
-import java.time.LocalDateTime;
+import tim2.cataloging.tim2.model.*;
+import tim2.cataloging.tim2.service.ShelfItemService;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -17,6 +21,9 @@ public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    private ShelfItemService shelfItemService;
 
     //READ ALL
     @GetMapping("")
@@ -36,12 +43,51 @@ public class ReviewController {
         return reviewService.findOne(id);
     }
     //CREATE
-    @PostMapping("")
-    public Review saveReview(@RequestBody Review review){
+    @PostMapping("/{bookId}")
+    public ResponseEntity<Review> saveReview(@RequestBody Review review, @PathVariable(name = "bookId") Long bookId, HttpSession session){
+        User loggedUser = (User) session.getAttribute("user");
+        if (loggedUser == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+
+        boolean allow = false;
+        ShelfItem shelfItem = new ShelfItem();
+        List<Shelf> shelves = loggedUser.getShelves();
+        for (Shelf s : shelves) {
+            if (s.getName().equals("Read")) {
+                List<ShelfItem> shelfItems = s.getShelfItems();
+                if (shelfItems != null) {
+                    for (ShelfItem si : shelfItems) {
+                        if (si.getBook().getId().equals(bookId)) {
+                            allow = true;
+                            shelfItem = si;
+                            break;
+                        }
+                    }
+                }
+
+                break;
+            }
+        }
+
+        if (!allow) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+
+
         // Set the date to the current date
         Date currentDate = new Date();
         review.setDate(currentDate);
-        return reviewService.save(review);
+        review.setUser(loggedUser);
+
+        if (shelfItem.getReviews() == null)
+            shelfItem.setReviews(new ArrayList<>());
+
+        shelfItem.getReviews().add(review);
+        reviewService.save(review);
+        shelfItemService.save(shelfItem);
+
+        return ResponseEntity.ok(review);
     }
     //UPDATE
     @PutMapping("/{id}")

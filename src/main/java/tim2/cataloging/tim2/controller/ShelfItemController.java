@@ -116,10 +116,7 @@ public class ShelfItemController {
         if (shelf.isPrimary()) {
             for (Shelf s : shelves) {
                 if (s.getShelfItems() != null) {
-                    for (ShelfItem si : s.getShelfItems()) {
-                        if (si.getId().equals(shelfItemId))
-                            s.getShelfItems().remove(si);
-                    }
+                    s.getShelfItems().removeIf(si -> si.getId().equals(shelfItemId));
                 }
 
                 if (Objects.equals(s.getId(), shelf.getId())) {
