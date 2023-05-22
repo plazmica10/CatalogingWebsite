@@ -25,6 +25,9 @@ public class ShelfService {
     public Shelf save(Shelf shelf){
         return shelfRepository.save(shelf);
     }
+    public void saveAll(List<Shelf> shelves){
+        shelfRepository.saveAll(shelves);
+    }
     public void deleteById(Long id){
         shelfRepository.deleteById(id);
     }

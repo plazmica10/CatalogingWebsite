@@ -19,8 +19,24 @@ public class ShelfItemService {
     @Autowired
     private ShelfItemRepository shelfItemRepository;
 
+    public ShelfItem findById(Long id) {
+        return shelfItemRepository.findById(id).orElse(null);
+    }
+
     public ShelfItem findByBookId(Long id) {
         return shelfItemRepository.findByBookId(id);
+    }
+
+    public ShelfItem save(ShelfItem shelfItem) {
+        return shelfItemRepository.save(shelfItem);
+    }
+
+    public ShelfItem deleteById(Long id) {
+        ShelfItem shelfItem = shelfItemRepository.findById(id).orElse(null);
+        if (shelfItem != null) {
+            shelfItemRepository.deleteById(id);
+        }
+        return shelfItem;
     }
 
 }
