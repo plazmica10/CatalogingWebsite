@@ -21,6 +21,14 @@ public class BookService {
         return bookRepository.findById(id).orElse(null);
     }
 
+    public Book findByTitle(String title) {
+        return bookRepository.findByTitle(title);
+    }
+
+    public Book findByIsbn(String isbn) {
+        return bookRepository.findByISBN(isbn);
+    }
+
     public Book save(Book book) {
         return bookRepository.save(book);
     }
