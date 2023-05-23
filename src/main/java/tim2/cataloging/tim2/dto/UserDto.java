@@ -23,8 +23,6 @@ public class UserDto {
 
     private String email;
 
-    private String password;
-
     private Date date;
 
     private String photo;   //link to photo
@@ -35,13 +33,12 @@ public class UserDto {
 
     private List<Shelf> shelves;
 
-    public UserDto(long id, String username, String name, String surname, String email, String password, Date date, String photo, String description, ROLE role, List<Shelf> shelves) {
+    public UserDto(long id, String username, String name, String surname, String email, Date date, String photo, String description, ROLE role, List<Shelf> shelves) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.password = password;
         this.date = date;
         this.photo = photo;
         this.description = description;
@@ -55,7 +52,6 @@ public class UserDto {
         this.name = user.getName();
         this.surname = user.getSurname();
         this.email = user.getEmail();
-        this.password = user.getPassword();
         this.date = user.getDate();
         this.photo = user.getPhoto();
         this.description = user.getDescription();
