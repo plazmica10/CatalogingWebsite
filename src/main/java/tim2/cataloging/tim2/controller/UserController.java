@@ -40,8 +40,14 @@ public class UserController {
 
     // READ ONE
     @GetMapping("/{id}")
-    public User getUser(@PathVariable(name = "id") Long id) {
-        return userService.findOne(id);
+    public ResponseEntity<UserDto> getUser(@PathVariable(name = "id") Long id) {
+        User user = userService.findOne(id);
+        if (user == null)
+            return ResponseEntity.notFound().build();
+        else {
+            UserDto dto = new UserDto(user);
+            return ResponseEntity.ok(dto);
+        }
     }
 
     // CREATE
