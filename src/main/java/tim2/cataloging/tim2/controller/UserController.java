@@ -13,6 +13,7 @@ import tim2.cataloging.tim2.service.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/users")
@@ -58,15 +59,42 @@ public class UserController {
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
+    public ResponseEntity<String> updateUser(@PathVariable(name = "id") Long id, @RequestBody UserDto user, HttpSession session) {
+        User loggedUser = (User) session.getAttribute("user");
+        if (loggedUser == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (loggedUser.getRole() == ROLE.ADMIN)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
         User existingUser = userService.findOne(id);
         if (existingUser == null)
             return ResponseEntity.badRequest().body("User with id: " + id + " does not exist!");
-        else {
+        if (loggedUser.getId() != existingUser.getId())
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        if (user.getName() != null)
             existingUser.setName(user.getName());
-            userService.save(existingUser);
-            return ResponseEntity.ok("Successfully updated user with id: " + id);
+        if (user.getSurname() != null)
+            existingUser.setSurname(user.getSurname());
+        if (user.getDate() != null)
+            existingUser.setDate(user.getDate());
+        if (user.getPhoto() != null)
+            existingUser.setPhoto(user.getPhoto());
+        if (user.getDescription() != null)
+            existingUser.setDescription(user.getDescription());
+
+        if (Objects.equals(user.getPassword2(), existingUser.getPassword())) {
+            if (user.getPassword() != null)
+                existingUser.setPassword(user.getPassword());
+            if (user.getEmail() != null)
+                existingUser.setEmail(user.getEmail());
+            if (user.getUsername() != null)
+                existingUser.setUsername(user.getUsername());
         }
+
+        userService.save(existingUser);
+
+        return ResponseEntity.ok("Successfully updated user with id: " + id);
     }
 
     // LOGIN

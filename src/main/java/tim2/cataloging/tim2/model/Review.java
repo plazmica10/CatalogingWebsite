@@ -1,5 +1,6 @@
 package tim2.cataloging.tim2.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;

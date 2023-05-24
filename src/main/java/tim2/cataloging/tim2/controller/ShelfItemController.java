@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tim2.cataloging.tim2.model.Review;
 import tim2.cataloging.tim2.model.Shelf;
 import tim2.cataloging.tim2.model.ShelfItem;
 import tim2.cataloging.tim2.model.User;
+import tim2.cataloging.tim2.service.ReviewService;
 import tim2.cataloging.tim2.service.ShelfItemService;
 import tim2.cataloging.tim2.service.ShelfService;
 import tim2.cataloging.tim2.service.UserService;
@@ -28,6 +30,9 @@ public class ShelfItemController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     // PUT ON SHELF
     @PostMapping("/{shelfItemId}/{shelfId}")
@@ -92,7 +97,7 @@ public class ShelfItemController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
-    // REMOVE FROM SHELF TODO not working
+    // REMOVE FROM SHELF
     @DeleteMapping("/{shelfItemId}/{shelfId}")
     public ResponseEntity<Shelf> removeFromShelf(@PathVariable(name = "shelfItemId") Long shelfItemId, @PathVariable(name = "shelfId") Long shelfId, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
@@ -117,18 +122,39 @@ public class ShelfItemController {
             for (Shelf s : shelves) {
                 if (s.getShelfItems() != null) {
                     s.getShelfItems().removeIf(si -> si.getId().equals(shelfItemId));
+                    shelfService.save(s);
                 }
-
-                if (Objects.equals(s.getId(), shelf.getId())) {
-                    shelf = s;
+            }
+        }
+        else {
+            for (Shelf s : shelves) {
+                if (Objects.equals(s.getId(), shelfId)) {
+                    if (s.getShelfItems() != null) {
+                        s.getShelfItems().removeIf(si -> si.getId().equals(shelfItemId));
+                        shelfService.save(s);
+                    }
                 }
             }
         }
 
-        shelf.getShelfItems().remove(shelfItem);
-        shelfService.save(shelf);
         loggedUser.setShelves(shelves);
         userService.save(loggedUser);
+
+        if (shelf.getName().equals("Read")) {
+            if (shelfItem.getReviews() != null) {
+//                shelfItem.getReviews().removeIf(r -> Objects.equals(r.getUser().getId(), loggedUser.getId()));
+//                shelfItemService.save(shelfItem);
+
+                for (Review r : shelfItem.getReviews()) {
+                    if (Objects.equals(r.getUser().getId(), loggedUser.getId())) {
+                        shelfItem.getReviews().remove(r);
+                        shelfService.save(shelf);
+                        reviewService.deleteById(r.getId());
+                        break;
+                    }
+                }
+            }
+        }
 
         return ResponseEntity.ok(shelf);
     }
