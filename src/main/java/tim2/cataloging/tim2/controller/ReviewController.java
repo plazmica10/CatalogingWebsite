@@ -10,6 +10,7 @@ import tim2.cataloging.tim2.model.Review;
 import tim2.cataloging.tim2.service.ReviewService;
 import tim2.cataloging.tim2.model.*;
 import tim2.cataloging.tim2.service.ShelfItemService;
+import tim2.cataloging.tim2.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,9 @@ public class ReviewController {
 
     @Autowired
     private ShelfItemService shelfItemService;
+
+    @Autowired
+    private UserService userService;
 
     //READ ALL
     @GetMapping("")
@@ -42,9 +46,10 @@ public class ReviewController {
     public Review getReview(@PathVariable(name = "id") Long id){
         return reviewService.findOne(id);
     }
+
     //CREATE
     @PostMapping("/{bookId}")
-    public ResponseEntity<Review> saveReview(@RequestBody Review review, @PathVariable(name = "bookId") Long bookId, HttpSession session){
+    public ResponseEntity<Review> saveReview(@RequestBody ReviewDto reviewDto, @PathVariable(name = "bookId") Long bookId, HttpSession session){
         User loggedUser = (User) session.getAttribute("user");
         if (loggedUser == null)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -74,11 +79,14 @@ public class ReviewController {
         }
 
 
+        Review review = new Review();
 
         // Set the date to the current date
         Date currentDate = new Date();
         review.setDate(currentDate);
         review.setUser(loggedUser);
+        review.setComment(reviewDto.getComment());
+        review.setRating(reviewDto.getRating());
 
         if (shelfItem.getReviews() == null)
             shelfItem.setReviews(new ArrayList<>());
@@ -86,21 +94,33 @@ public class ReviewController {
         shelfItem.getReviews().add(review);
         reviewService.save(review);
         shelfItemService.save(shelfItem);
+        userService.save(loggedUser);
+
 
         return ResponseEntity.ok(review);
     }
+
     //UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateReview(@PathVariable("id") Long id, @RequestBody Review updatedReview) {
+    public ResponseEntity<String> updateReview(@PathVariable("id") Long id, @RequestBody ReviewDto updatedReview, HttpSession session) {
         try {
+            User loggedUser = (User) session.getAttribute("user");
+            if (loggedUser == null)
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not logged in");
+
             Review existingReview = reviewService.findOne(id);
             if (existingReview == null) {
                 return ResponseEntity.notFound().build();
             }
+            if (existingReview.getUser().getId() != loggedUser.getId())
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not the owner of this review");
+
             // Set the date to the current date
             Date currentDate = new Date();
-            existingReview.setComment(updatedReview.getComment());
-            existingReview.setRating(updatedReview.getRating());
+            if (updatedReview.getComment() != null)
+                existingReview.setComment(updatedReview.getComment());
+            if (updatedReview.getRating() != 0)
+                existingReview.setRating(updatedReview.getRating());
             existingReview.setDate(currentDate);
             reviewService.save(existingReview); // Save the updated review
 
