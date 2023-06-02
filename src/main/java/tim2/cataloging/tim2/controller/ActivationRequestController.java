@@ -85,7 +85,7 @@ public class ActivationRequestController {
         requestService.save(activationRequest);
         return ResponseEntity.ok("Request sent!");
     }
-    //poziva je approve dugme
+
     @PostMapping("/{id}/approve")
     public ResponseEntity<String> approveRequest(@PathVariable(name = "id") Long id, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
@@ -102,12 +102,16 @@ public class ActivationRequestController {
             request.setStatus(STATUS.APPROVED);
 
             String pw = "123456";//TODO: generate random password
-            String subject = "Your activation request has been approved";
-            String message = "Your account has been activated.\n" +
-                    "Your password is: " + pw + "\n\n" +
-                    "Best regards,\n" +
-                    "The Škipelas Team";
-            emailService.sendEmail(request.getEmail(), subject, message);
+            try{
+                String subject = "Your activation request has been approved";
+                String message = "Your account has been activated.\n" +
+                        "Your password is: " + pw + "\n\n" +
+                        "Best regards,\n" +
+                        "The Škipelas Team";
+                emailService.sendEmail(request.getEmail(), subject, message);
+            }catch (Exception e){
+                return ResponseEntity.badRequest().body("Error while sending email!");
+            }
             requestService.save(request);
 
             Author author = new Author();
@@ -129,11 +133,11 @@ public class ActivationRequestController {
 
             author.setShelves(shelves);
             authorService.save(author);
-            requestService.delete(id); //da li treba da se obrise request?
+            requestService.delete(id);
             return ResponseEntity.ok("Request approved!");
         }
     }
-    //poziva je deny dugme
+
     @DeleteMapping("/{id}/deny")
     public ResponseEntity<String> deleteRequest(@PathVariable(name = "id") Long id, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
@@ -145,14 +149,13 @@ public class ActivationRequestController {
         if (request == null)
             return ResponseEntity.badRequest().body("Request with id: " + id + " does not exist!");
         else {
-            try {// Send email to user
+            try {
                 String subject = "Your activation request has been denied";
                 String message = "You weren't the chosen one.\n\n" +
                                  "Best regards,\n" +
                                  "The Škipelas Team";
                 emailService.sendEmail(request.getEmail(), subject, message);
             } catch (Exception e) {
-                System.err.println(e.getMessage());
                 return ResponseEntity.badRequest().body("Error while sending email!");
             }
 
