@@ -29,6 +29,8 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<User> userList = userService.findAll();
+        if(userList == null)
+            return ResponseEntity.notFound().build();
 
         List<UserDto> userDtoList = new ArrayList<>();
         for (User user : userList) {
@@ -49,12 +51,6 @@ public class UserController {
             UserDto dto = new UserDto(user);
             return ResponseEntity.ok(dto);
         }
-    }
-
-    // CREATE
-    @PostMapping("")
-    public User saveUser(@RequestBody User user) {
-        return this.userService.save(user);
     }
 
     // UPDATE
