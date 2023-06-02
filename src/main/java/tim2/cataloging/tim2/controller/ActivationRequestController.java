@@ -6,15 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import tim2.cataloging.tim2.dto.ActivationDto;
 import tim2.cataloging.tim2.model.*;
-import tim2.cataloging.tim2.service.ActivationRequestService;
+import tim2.cataloging.tim2.service.*;
 import org.springframework.web.bind.annotation.*;
-import tim2.cataloging.tim2.service.AuthorService;
-import tim2.cataloging.tim2.service.ShelfService;
-import tim2.cataloging.tim2.service.UserService;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/requests")
@@ -31,6 +29,9 @@ public class ActivationRequestController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/{id}")
     public ResponseEntity<ActivationDto> getReq(@PathVariable(name = "id") Long id, HttpSession session) {
@@ -85,14 +86,12 @@ public class ActivationRequestController {
         return ResponseEntity.ok("Request sent!");
     }
     //poziva je approve dugme
-    @PutMapping("/{id}/approve")
+    @PostMapping("/{id}/approve")
     public ResponseEntity<String> approveRequest(@PathVariable(name = "id") Long id, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
         if(loggedUser.getRole() != ROLE.ADMIN)
             return ResponseEntity.badRequest().body("You are not admin!");
-
         ActivationRequest request = requestService.findOne(id);
-
         if (request == null)
             return ResponseEntity.badRequest().body("Request with id: " + id + " does not exist!");
         else {
@@ -101,11 +100,21 @@ public class ActivationRequestController {
                 return ResponseEntity.badRequest().body("User with email: " + request.getEmail() + " already exists!");
 
             request.setStatus(STATUS.APPROVED);
+
+            String pw = "123456";//TODO: generate random password
+            String subject = "Your activation request has been approved";
+            String message = "Your account has been activated.\n" +
+                    "Your password is: " + pw + "\n\n" +
+                    "Best regards,\n" +
+                    "The Škipelas Team";
+            emailService.sendEmail(request.getEmail(), subject, message);
             requestService.save(request);
 
             Author author = new Author();
             author.setEmail(request.getEmail());
+            author.setPassword(pw);
             author.setActive(true);
+
             Shelf wantToRead = new Shelf("Want to read",true);
             Shelf currentlyReading = new Shelf("Currently reading",true);
             Shelf read = new Shelf("Read",true);
@@ -120,7 +129,7 @@ public class ActivationRequestController {
 
             author.setShelves(shelves);
             authorService.save(author);
-            requestService.delete(id);
+            requestService.delete(id); //da li treba da se obrise request?
             return ResponseEntity.ok("Request approved!");
         }
     }
@@ -136,6 +145,17 @@ public class ActivationRequestController {
         if (request == null)
             return ResponseEntity.badRequest().body("Request with id: " + id + " does not exist!");
         else {
+            try {// Send email to user
+                String subject = "Your activation request has been denied";
+                String message = "You weren't the chosen one.\n\n" +
+                                 "Best regards,\n" +
+                                 "The Škipelas Team";
+                emailService.sendEmail(request.getEmail(), subject, message);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                return ResponseEntity.badRequest().body("Error while sending email!");
+            }
+
             requestService.delete(id);
             return ResponseEntity.ok("Request deleted!");
         }
