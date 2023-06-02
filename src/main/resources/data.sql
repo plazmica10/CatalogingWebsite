@@ -5,7 +5,7 @@ INSERT INTO GENRE (name) VALUES ( 'Horror' );
 INSERT INTO GENRE (name) VALUES ( 'Romance' );
 INSERT INTO GENRE (name) VALUES ( 'Science Fiction' );
 
-INSERT INTO ACTIVATION_REQUEST (email, phone, message, date, status) VALUES ( 'example@gmail.com', '0631111111', 'Test', DATE '2022-9-11', 0 );
+INSERT INTO ACTIVATION_REQUEST (email, phone, message, date, status) VALUES ( 'ognjen02110@gmail.com', '0631111111', 'Test', DATE '2022-9-11', 0 );
 
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'test', 'John', 'Doe', 'john@gmail.com', '123', DATE '1969-4-20', 'photo', 'opis', 0 );
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'user', 'John', 'Doe', 'johnny@gmail.com', '123', DATE '1969-4-20', 'photo', 'opis', 0 );
