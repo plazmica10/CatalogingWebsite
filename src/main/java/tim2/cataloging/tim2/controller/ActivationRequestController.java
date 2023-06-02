@@ -5,11 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import tim2.cataloging.tim2.dto.ActivationDto;
-import tim2.cataloging.tim2.model.ActivationRequest;
-import tim2.cataloging.tim2.model.ROLE;
-import tim2.cataloging.tim2.model.User;
+import tim2.cataloging.tim2.model.*;
 import tim2.cataloging.tim2.service.ActivationRequestService;
 import org.springframework.web.bind.annotation.*;
+import tim2.cataloging.tim2.service.AuthorService;
+import tim2.cataloging.tim2.service.ShelfService;
+import tim2.cataloging.tim2.service.UserService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +22,15 @@ public class ActivationRequestController {
 
     @Autowired
     private ActivationRequestService requestService;
+
+    @Autowired
+    private AuthorService authorService;
+
+    @Autowired
+    private ShelfService shelfService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/{id}")
     public ResponseEntity<ActivationDto> getReq(@PathVariable(name = "id") Long id, HttpSession session) {
@@ -70,11 +80,52 @@ public class ActivationRequestController {
         activationRequest.setMessage(request.getMessage());
         activationRequest.setPhone(request.getPhone());
         activationRequest.setDate(date);
+        activationRequest.setStatus(STATUS.PENDING);
         requestService.save(activationRequest);
-
         return ResponseEntity.ok("Request sent!");
     }
-    @DeleteMapping("/{id}")
+    //poziva je approve dugme
+    @PutMapping("/{id}/approve")
+    public ResponseEntity<String> approveRequest(@PathVariable(name = "id") Long id, HttpSession session) {
+        User loggedUser = (User) session.getAttribute("user");
+        if(loggedUser.getRole() != ROLE.ADMIN)
+            return ResponseEntity.badRequest().body("You are not admin!");
+
+        ActivationRequest request = requestService.findOne(id);
+
+        if (request == null)
+            return ResponseEntity.badRequest().body("Request with id: " + id + " does not exist!");
+        else {
+            User user = userService.findByEmail(request.getEmail());
+            if(user != null)
+                return ResponseEntity.badRequest().body("User with email: " + request.getEmail() + " already exists!");
+
+            request.setStatus(STATUS.APPROVED);
+            requestService.save(request);
+
+            Author author = new Author();
+            author.setEmail(request.getEmail());
+            author.setActive(true);
+            Shelf wantToRead = new Shelf("Want to read",true);
+            Shelf currentlyReading = new Shelf("Currently reading",true);
+            Shelf read = new Shelf("Read",true);
+            shelfService.save(wantToRead);
+            shelfService.save(currentlyReading);
+            shelfService.save(read);
+
+            List<Shelf> shelves = new ArrayList<>();
+            shelves.add(wantToRead);
+            shelves.add(currentlyReading);
+            shelves.add(read);
+
+            author.setShelves(shelves);
+            authorService.save(author);
+            requestService.delete(id);
+            return ResponseEntity.ok("Request approved!");
+        }
+    }
+    //poziva je deny dugme
+    @DeleteMapping("/{id}/deny")
     public ResponseEntity<String> deleteRequest(@PathVariable(name = "id") Long id, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
         if(loggedUser.getRole() != ROLE.ADMIN)
