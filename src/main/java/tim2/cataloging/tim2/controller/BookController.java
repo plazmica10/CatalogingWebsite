@@ -164,4 +164,25 @@ public class BookController {
             return ResponseEntity.ok("Successfully deleted book with id: " + id);
         }
     }
+    //SEARCH
+    @GetMapping("/search/{title}")
+    public ResponseEntity<List<BookDto>> searchBooks(@PathVariable(name = "title") String title) {
+        List<Book> bookList = bookService.findAll();
+        List<Book> result = new ArrayList<>();
+        for(Book b:bookList){
+            if(b.getTitle().toLowerCase().contains(title.toLowerCase())){
+                result.add(b);
+            }
+        }
+        if(result.isEmpty()){
+            return ResponseEntity.badRequest().body(null);
+        }
+        List<BookDto> bookDtoList = new ArrayList<>();
+        for(Book b:result){
+            BookDto dto = new BookDto(b);
+            bookDtoList.add(dto);
+        }
+        return ResponseEntity.ok(bookDtoList);
+    }
+
 }
