@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @RestController
@@ -70,10 +71,15 @@ public class ActivationRequestController {
         return ResponseEntity.ok(dtos);
     }
     @PostMapping("")
-    public ResponseEntity<String> send(@RequestBody ActivationDto request, HttpSession session) {
+    public ResponseEntity<String> send(@RequestBody ActivationRequest request, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
         if (loggedUser != null)
             return ResponseEntity.badRequest().body("You cant send request while logged in!");
+
+        //ako je vec poslat zahtev sa istim mejlom ne salji ga opet
+        ActivationRequest existingRequest = requestService.findByEmail(request.getEmail());
+        if (existingRequest != null)
+            return ResponseEntity.badRequest().body("You have already sent a request!");
 
         ActivationRequest activationRequest = new ActivationRequest();
         Date date = new Date();
@@ -82,6 +88,7 @@ public class ActivationRequestController {
         activationRequest.setPhone(request.getPhone());
         activationRequest.setDate(date);
         activationRequest.setStatus(STATUS.PENDING);
+        activationRequest.setUser(request.getUser());
         requestService.save(activationRequest);
         return ResponseEntity.ok("Request sent!");
     }
@@ -91,6 +98,7 @@ public class ActivationRequestController {
         User loggedUser = (User) session.getAttribute("user");
         if(loggedUser.getRole() != ROLE.ADMIN)
             return ResponseEntity.badRequest().body("You are not admin!");
+
         ActivationRequest request = requestService.findOne(id);
         if (request == null)
             return ResponseEntity.badRequest().body("Request with id: " + id + " does not exist!");
@@ -100,8 +108,18 @@ public class ActivationRequestController {
                 return ResponseEntity.badRequest().body("User with email: " + request.getEmail() + " already exists!");
 
             request.setStatus(STATUS.APPROVED);
+            //generisanje random passworda
+            Random random = new Random();
+            int passwordLength = 8; // or however long you want the password to be
+            String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+            StringBuilder password = new StringBuilder(passwordLength);
 
-            String pw = "123456";//TODO: generate random password
+            for (int i = 0; i < passwordLength; i++) {
+                password.append(characters.charAt(random.nextInt(characters.length())));
+            }
+
+            String pw = password.toString();
+            //slanje mejla
             try{
                 String subject = "Your activation request has been approved";
                 String message = "Your account has been activated.\n" +
@@ -114,7 +132,7 @@ public class ActivationRequestController {
             }
             requestService.save(request);
 
-            Author author = new Author();
+            Author author = (Author) request.getUser();
             author.setEmail(request.getEmail());
             author.setPassword(pw);
             author.setActive(true);

@@ -26,4 +26,8 @@ public class ActivationRequestService {
     public void delete(Long id) {
         requestRepository.deleteById(id);
     }
+
+    public ActivationRequest findByEmail(String email) {
+        return requestRepository.findByEmail(email);
+    }
 }
