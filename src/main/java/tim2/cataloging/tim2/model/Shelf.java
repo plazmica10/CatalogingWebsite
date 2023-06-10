@@ -17,7 +17,7 @@ public class Shelf implements Serializable {
     @Column
     private boolean isPrimary;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "item_on_shelf",
             joinColumns = @JoinColumn(name = "shelf_id", unique = false),
             inverseJoinColumns = @JoinColumn(name = "shelfitem_id", unique = false))

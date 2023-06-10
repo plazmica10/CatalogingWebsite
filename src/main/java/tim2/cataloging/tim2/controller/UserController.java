@@ -79,15 +79,6 @@ public class UserController {
         if (user.getDescription() != null)
             existingUser.setDescription(user.getDescription());
 
-        if (Objects.equals(user.getPassword2(), existingUser.getPassword())) {
-            if (user.getPassword() != null)
-                existingUser.setPassword(user.getPassword());
-            if (user.getEmail() != null)
-                existingUser.setEmail(user.getEmail());
-            if (user.getUsername() != null)
-                existingUser.setUsername(user.getUsername());
-        }
-
         userService.save(existingUser);
 
         return ResponseEntity.ok("Successfully updated user with id: " + id);
@@ -171,5 +162,14 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register user: " + e.getMessage());
         }
+    }
+    //get shelves of a user
+    @GetMapping("/{id}/shelves")
+    public ResponseEntity<List<Shelf>> getShelves(@PathVariable(name = "id") Long id) {
+        User user = userService.findOne(id);
+        if (user == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(user.getShelves());
     }
 }

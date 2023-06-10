@@ -43,6 +43,7 @@ public class AuthorController {
 
         Author newAuthor = new Author();
         newAuthor.setActive(false);
+        newAuthor.setRole(ROLE.AUTHOR);
         authorService.save(newAuthor);
         return ResponseEntity.ok().build();
     }
