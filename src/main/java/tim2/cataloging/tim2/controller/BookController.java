@@ -165,14 +165,13 @@ public class BookController {
         }
     }
     //SEARCH
-    @GetMapping("/search/{title}")
-    public ResponseEntity<List<BookDto>> searchBooks(@PathVariable(name = "title") String title) {
+    @GetMapping("/search/{text}")
+    public ResponseEntity<List<BookDto>> searchBooks(@PathVariable(name = "text") String text) {
         List<Book> bookList = bookService.findAll();
         List<Book> result = new ArrayList<>();
         for(Book b:bookList){
-            if(b.getTitle().toLowerCase().contains(title.toLowerCase())){
+            if(b.getTitle().toLowerCase().contains(text.toLowerCase()) || b.getGenre().getName().toLowerCase().contains(text.toLowerCase()) || b.getISBN().toLowerCase().contains(text.toLowerCase()))
                 result.add(b);
-            }
         }
         if(result.isEmpty()){
             return ResponseEntity.badRequest().body(null);
