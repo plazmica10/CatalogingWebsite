@@ -37,14 +37,8 @@ public class ShelfItemController {
 
     //READ ALL
     @GetMapping("")
-    public ResponseEntity<List<ShelfItem>> getShelfItems(HttpSession session){
-        User loggedUser = (User) session.getAttribute("user");
-        if (loggedUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
+    public ResponseEntity<List<ShelfItem>> getShelfItems(){
         List<ShelfItem> shelfItems = shelfItemService.findAll();
-
         return ResponseEntity.ok(shelfItems);
     }
     // PUT ON SHELF

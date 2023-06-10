@@ -15,14 +15,16 @@ INSERT INTO USERS (username, name, surname, email, password, date, photo, descri
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'daisyMeRollin', 'Joanne', 'Rowling', 'misBigJ@gmail.com', 'pass123', DATE '1965-7-31', 'photo', 'Tot G', 1 );
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'mrOrwell', 'George', 'Orwell', 'orwell@gmail.com', 'pass123', DATE '1965-7-31', 'photo', 'OldieButGoldie', 1 );
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'tolkien', 'John', 'Ronald Reuel Tolkien', 'tolkien@gmail.com', 'pass123', DATE '1965-7-31', 'photo', 'LOTR fan', 1 );
+INSERT INTO USERS (name,surname,role) VALUES ('Stephen','King',1);
 
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'Shef', 'Gordon', 'Ramsay', 'idiotsandwich@gmail.com', 'pass123', DATE '1966-11-8', 'photo', 'flippin twat', 2 );
 
-INSERT INTO ACTIVATION_REQUEST (email, phone, message, date, status,user_id) VALUES ( 'ognjen02110@gmail.com', '0631111111', 'Test', DATE '2022-9-11', 0,5);
+INSERT INTO ACTIVATION_REQUEST (email, phone, message, date, status,user_id) VALUES ( 'ognjen02110@gmail.com', '0631111111', 'Test', DATE '2022-9-11', 0,8);
 
 INSERT INTO AUTHORS (id, is_active) VALUES ( 5, 1 );
 INSERT INTO AUTHORS (id, is_active) VALUES ( 6, 1 );
 INSERT INTO AUTHORS (id, is_active) VALUES ( 7, 1 );
+INSERT INTO AUTHORS (id, is_active) VALUES ( 8, 0 );
 
 INSERT INTO REVIEW (rating, comment, date, user_id) VALUES ( 5, 'Iz good', DATE '2022-4-16', 1 );
 INSERT INTO REVIEW (rating, comment, date, user_id) VALUES ( 10, 'Shit slaps', DATE '2023-7-7', 2 );
@@ -42,7 +44,8 @@ INSERT INTO SHELF_ITEM (book_id) VALUES ( 2 );
 INSERT INTO SHELF_ITEM (book_id) VALUES ( 3 );
 INSERT INTO SHELF_ITEM (book_id) VALUES ( 4 );
 
-//INSERT INTO ITEM_REVIEWS(shelf_item_id, review_id) VALUES (1, 1);
+INSERT INTO ITEM_REVIEWS(shelf_item_id, review_id) VALUES (1, 1);
+INSERT INTO ITEM_REVIEWS(shelf_item_id, review_id) VALUES (2, 2);
 
 // users shelves
 INSERT INTO SHELF (name, is_primary) VALUES ( 'Want to read', 1 );

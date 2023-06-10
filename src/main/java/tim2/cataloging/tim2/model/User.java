@@ -40,7 +40,7 @@ public class User implements Serializable {
     @Column
     private ROLE role;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Shelf> shelves;
 
     // CONSTRUCTORS

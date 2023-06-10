@@ -18,7 +18,6 @@ public class ShelfItem implements Serializable {
     @JoinTable(name = "item_reviews",
             joinColumns = @JoinColumn(name = "shelf_item_id"),
             inverseJoinColumns = @JoinColumn(name = "review_id"))
-    @JsonIgnore
     private List<Review> reviews;
 
     @OneToOne
