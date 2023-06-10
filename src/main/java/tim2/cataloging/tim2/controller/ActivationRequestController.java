@@ -88,6 +88,14 @@ public class ActivationRequestController {
         activationRequest.setPhone(request.getPhone());
         activationRequest.setDate(date);
         activationRequest.setStatus(STATUS.PENDING);
+        User u = userService.findOne(request.getUser().getId());
+
+
+        if(u == null)
+            return ResponseEntity.badRequest().body("User with id: " + request.getUser().getId() + " does not exist!");
+        if(u.getRole() != ROLE.AUTHOR)
+            return ResponseEntity.badRequest().body("Can't activate anyone except authors!");
+
         activationRequest.setUser(request.getUser());
         requestService.save(activationRequest);
         return ResponseEntity.ok("Request sent!");

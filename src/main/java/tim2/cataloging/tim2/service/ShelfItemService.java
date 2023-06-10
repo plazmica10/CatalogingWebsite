@@ -7,6 +7,8 @@ import tim2.cataloging.tim2.model.ShelfItem;
 import tim2.cataloging.tim2.repository.ShelfItemRepository;
 import tim2.cataloging.tim2.repository.ShelfRepository;
 
+import java.util.List;
+
 @Service
 public class ShelfItemService {
 
@@ -20,6 +22,9 @@ public class ShelfItemService {
     @Autowired
     private ShelfItemRepository shelfItemRepository;
 
+    public List<ShelfItem> findAll() {
+        return shelfItemRepository.findAll();
+    }
     public ShelfItem findById(Long id) {
         return shelfItemRepository.findById(id).orElse(null);
     }

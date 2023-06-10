@@ -23,9 +23,6 @@ public class UserDto {
 
     private String email;
 
-    private String password;
-
-    private String password2;
 
     private Date date;
 
@@ -81,14 +78,6 @@ public class UserDto {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getPassword2() {
-        return password2;
     }
 
     public Date getDate() {

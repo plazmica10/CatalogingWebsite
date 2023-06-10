@@ -34,6 +34,19 @@ public class ShelfItemController {
     @Autowired
     private ReviewService reviewService;
 
+
+    //READ ALL
+    @GetMapping("")
+    public ResponseEntity<List<ShelfItem>> getShelfItems(HttpSession session){
+        User loggedUser = (User) session.getAttribute("user");
+        if (loggedUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        List<ShelfItem> shelfItems = shelfItemService.findAll();
+
+        return ResponseEntity.ok(shelfItems);
+    }
     // PUT ON SHELF
     @PostMapping("/{shelfItemId}/{shelfId}")
     public ResponseEntity<Shelf> putOnShelf(@PathVariable(name = "shelfItemId") Long shelfItemId, @PathVariable(name = "shelfId") Long shelfId, HttpSession session) {
