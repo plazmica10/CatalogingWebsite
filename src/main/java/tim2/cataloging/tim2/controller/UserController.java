@@ -55,7 +55,7 @@ public class UserController {
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable(name = "id") Long id, @RequestBody UserDto user, HttpSession session) {
+    public ResponseEntity<String> updateUser(@PathVariable(name = "id") Long id, @RequestBody User user, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
         if (loggedUser == null)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -78,7 +78,8 @@ public class UserController {
             existingUser.setPhoto(user.getPhoto());
         if (user.getDescription() != null)
             existingUser.setDescription(user.getDescription());
-
+        if (user.getPassword() != null)
+            existingUser.setPassword(user.getPassword());
         userService.save(existingUser);
 
         return ResponseEntity.ok("Successfully updated user with id: " + id);
