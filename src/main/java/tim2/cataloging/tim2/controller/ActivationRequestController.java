@@ -167,6 +167,8 @@ public class ActivationRequestController {
     @DeleteMapping("/{id}/deny")
     public ResponseEntity<String> deleteRequest(@PathVariable(name = "id") Long id, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
+        if(loggedUser == null)
+            return ResponseEntity.badRequest().body("You are not logged in!");
         if(loggedUser.getRole() != ROLE.ADMIN)
             return ResponseEntity.badRequest().body("You are not admin!");
 

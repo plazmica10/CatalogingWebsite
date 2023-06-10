@@ -44,8 +44,6 @@ public class AuthorController{
         newAuthor.setRole(ROLE.AUTHOR);
         newAuthor.setName(autor.getName());
         newAuthor.setSurname(autor.getSurname());
-        newAuthor.setEmail(autor.getEmail());
-        newAuthor.setUsername(autor.getUsername());
         authorService.save(newAuthor);
         return ResponseEntity.ok().build();
     }
@@ -64,11 +62,14 @@ public class AuthorController{
         if(a.isActive()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        a.setName(author.getName());
-        a.setSurname(author.getSurname());
-        a.setDescription(author.getDescription());
-        a.setEmail(author.getEmail());
-        a.setUsername(author.getUsername());
+        if(author.getName() != null)
+            a.setName(author.getName());
+        if(author.getSurname() != null)
+            a.setSurname(author.getSurname());
+        if(author.getDescription() != null)
+            a.setDescription(author.getDescription());
+        if(author.getUsername() != null)
+            a.setUsername(author.getUsername());
         authorService.save(a);
         return ResponseEntity.ok().build();
     }
