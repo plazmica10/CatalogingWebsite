@@ -7,6 +7,7 @@ import tim2.cataloging.tim2.model.Book;
 import tim2.cataloging.tim2.model.Genre;
 
 import java.util.Date;
+import java.time.LocalDate;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class BookDto {
@@ -19,7 +20,7 @@ public class BookDto {
 
     private String photo;
 
-    private Date date;
+    private LocalDate date;
 
     private int pages;
 
@@ -30,7 +31,7 @@ public class BookDto {
     private Genre genre;
 
     // CONSTRUCTORS
-    public BookDto(Long id, String ISBN, String title, String photo, Date date, int pages, String description, int rating, Genre genre) {
+    public BookDto(Long id, String ISBN, String title, String photo, LocalDate date, int pages, String description, int rating, Genre genre) {
         this.id = id;
         this.ISBN = ISBN;
         this.title = title;

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tim2.cataloging.tim2.dto.ShelfItemDto;
 import tim2.cataloging.tim2.model.Review;
 import tim2.cataloging.tim2.model.Shelf;
 import tim2.cataloging.tim2.model.ShelfItem;
@@ -41,6 +42,23 @@ public class ShelfItemController {
         List<ShelfItem> shelfItems = shelfItemService.findAll();
         return ResponseEntity.ok(shelfItems);
     }
+
+//READ ONE
+    @GetMapping("/{id}")
+    public ResponseEntity<ShelfItemDto> getShelfItem(@PathVariable Long id){
+        ShelfItem shelfItem = shelfItemService.findById(id);
+        if(shelfItem == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        ShelfItemDto shelfItemDto = new ShelfItemDto();
+        shelfItemDto.setId(shelfItem.getId());
+        shelfItemDto.setBook(shelfItem.getBook());
+        shelfItemDto.setReviews(shelfItem.getReviews());
+
+        return ResponseEntity.ok(shelfItemDto);
+    }
+
     // PUT ON SHELF
     @PostMapping("/{shelfItemId}/{shelfId}")
     public ResponseEntity<Shelf> putOnShelf(@PathVariable(name = "shelfItemId") Long shelfItemId, @PathVariable(name = "shelfId") Long shelfId, HttpSession session) {

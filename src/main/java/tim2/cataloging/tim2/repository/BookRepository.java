@@ -9,7 +9,6 @@ public interface BookRepository extends JpaRepository<Book, Long>{
 
     Book findByTitle(String title);
     Book findByISBN(String isbn);
-
     List<Book> findByGenreId(Long id);
 
 }

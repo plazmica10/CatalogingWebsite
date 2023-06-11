@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Review implements Serializable {
@@ -19,7 +19,7 @@ public class Review implements Serializable {
     private String comment;
 
     @Column
-    private Date date;
+    private LocalDate date;
 
     @ManyToOne
     private User user;
@@ -27,11 +27,18 @@ public class Review implements Serializable {
     public Review(){
 
     }
-    public Review(Long id, int rating, String comment, Date date) {
+    public Review(Long id, int rating, String comment, LocalDate date) {
         this.id = id;
         this.rating = rating;
         this.comment = comment;
         this.date = date;
+    }
+
+    public Review(int rating, String comment, LocalDate date, User user) {
+        this.rating = rating;
+        this.comment = comment;
+        this.date = date;
+        this.user = user;
     }
 
     public Long getId() {
@@ -58,11 +65,11 @@ public class Review implements Serializable {
         this.comment = comment;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

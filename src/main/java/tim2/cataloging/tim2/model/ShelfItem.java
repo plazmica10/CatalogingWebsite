@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,6 +19,7 @@ public class ShelfItem implements Serializable {
     @JoinTable(name = "item_reviews",
             joinColumns = @JoinColumn(name = "shelf_item_id"),
             inverseJoinColumns = @JoinColumn(name = "review_id"))
+    @JsonIgnore
     private List<Review> reviews;
 
     @OneToOne
@@ -30,6 +32,11 @@ public class ShelfItem implements Serializable {
         this.id = id;
         this.reviews = reviews;
         this.book = book;
+    }
+
+    public ShelfItem(Book book) {
+        this.book = book;
+        reviews = new ArrayList<Review>();
     }
 
     public Long getId() {

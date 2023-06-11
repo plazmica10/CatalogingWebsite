@@ -9,6 +9,7 @@ import tim2.cataloging.tim2.model.User;
 
 import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class UserDto {
@@ -24,7 +25,7 @@ public class UserDto {
     private String email;
 
 
-    private Date date;
+    private LocalDate date;
 
     private String photo;   //link to photo
 
@@ -34,7 +35,7 @@ public class UserDto {
 
     private List<Shelf> shelves;
 
-    public UserDto(long id, String username, String name, String surname, String email, Date date, String photo, String description, ROLE role, List<Shelf> shelves) {
+    public UserDto(long id, String username, String name, String surname, String email, LocalDate date, String photo, String description, ROLE role, List<Shelf> shelves) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -80,7 +81,7 @@ public class UserDto {
         return email;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

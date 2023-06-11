@@ -3,6 +3,7 @@ package tim2.cataloging.tim2.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,6 +29,7 @@ public class Shelf implements Serializable {
     public Shelf(String name, boolean isPrimary) {
         this.name = name;
         this.isPrimary = isPrimary;
+        shelfItems = new ArrayList<ShelfItem>();
     }
 
     public Long getId() {

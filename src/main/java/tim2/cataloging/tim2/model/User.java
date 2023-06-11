@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -29,7 +30,7 @@ public class User implements Serializable {
     private String password;
 
     @Column
-    private Date date;
+    private LocalDate date;
 
     @Column
     private String photo;   //link to photo
@@ -44,7 +45,7 @@ public class User implements Serializable {
     private List<Shelf> shelves;
 
     // CONSTRUCTORS
-    public User(String username, String name, String surname, String email, String password, Date date, String photo, String description, ROLE role) {
+    public User(String username, String name, String surname, String email, String password, LocalDate date, String photo, String description, ROLE role) {
         this.username = username;
         this.name = name;
         this.surname = surname;
@@ -108,11 +109,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
