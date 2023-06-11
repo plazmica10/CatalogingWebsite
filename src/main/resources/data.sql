@@ -6,17 +6,17 @@ INSERT INTO GENRE (name) VALUES ( 'Romance' );
 INSERT INTO GENRE (name) VALUES ( 'Science Fiction' );
 
 
-
+-- users
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'test', 'John', 'Doe', 'john@gmail.com', '123', DATE '1969-4-20', 'photo', 'opis', 0 );
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'user', 'John', 'Doe', 'johnny@gmail.com', '123', DATE '1969-4-20', 'photo', 'opis', 0 );
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'nesto', 'John', 'Doe', 'mrDoe@gmail.com', '123', DATE '1969-4-20', 'photo', 'opis', 0 );
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'username', 'John', 'Doe', 'doe.john@gmail.com', '123', DATE '1969-4-20', 'photo', 'opis', 0 );
-
+-- authors
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'daisyMeRollin', 'Joanne', 'Rowling', 'misBigJ@gmail.com', 'pass123', DATE '1965-7-31', 'photo', 'Tot G', 1 );
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'mrOrwell', 'George', 'Orwell', 'orwell@gmail.com', 'pass123', DATE '1965-7-31', 'photo', 'OldieButGoldie', 1 );
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'tolkien', 'John', 'Ronald Reuel Tolkien', 'tolkien@gmail.com', 'pass123', DATE '1965-7-31', 'photo', 'LOTR fan', 1 );
 INSERT INTO USERS (name,surname,role) VALUES ('Stephen','King',1);
-
+-- admins
 INSERT INTO USERS (username, name, surname, email, password, date, photo, description, role) VALUES ( 'Shef', 'Gordon', 'Ramsay', 'idiotsandwich@gmail.com', 'pass123', DATE '1966-11-8', 'photo', 'flippin twat', 2 );
 
 INSERT INTO ACTIVATION_REQUEST (email, phone, message, date, status,user_id) VALUES ( 'ognjen02110@gmail.com', '0631111111', 'Test', DATE '2022-9-11', 0,8);
