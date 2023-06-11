@@ -145,9 +145,11 @@ public class BookController {
 
         List<Shelf> shelves = shelfService.findAll();
         for (Shelf s : shelves) {
-            s.getShelfItems().remove(shelfItem);
+//            s.getShelfItems().remove(shelfItem);
+            s.getShelfItems().removeIf(shelfItem1 -> shelfItem1.getId().equals(shelfItem.getId()));
+            shelfService.save(s);
         }
-        shelfService.saveAll(shelves);
+//        shelfService.saveAll(shelves);
 
         shelfItemService.deleteById(shelfItem.getId());
 

@@ -9,6 +9,7 @@ import tim2.cataloging.tim2.model.*;
 import tim2.cataloging.tim2.service.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -81,20 +82,29 @@ public class ActivationRequestController {
         if (existingRequest != null)
             return ResponseEntity.badRequest().body("You have already sent a request!");
 
-        ActivationRequest activationRequest = new ActivationRequest();
-        Date date = new Date();
-        activationRequest.setEmail(request.getEmail());
-        activationRequest.setMessage(request.getMessage());
-        activationRequest.setPhone(request.getPhone());
-        activationRequest.setDate(date);
-        activationRequest.setStatus(STATUS.PENDING);
+
         User u = userService.findOne(request.getUser().getId());
-
-
         if(u == null)
             return ResponseEntity.badRequest().body("User with id: " + request.getUser().getId() + " does not exist!");
         if(u.getRole() != ROLE.AUTHOR)
             return ResponseEntity.badRequest().body("Can't activate anyone except authors!");
+        Author author = authorService.findOne(u.getId());
+        if(author.isActive())
+            return ResponseEntity.badRequest().body("Author with id: " + u.getId() + " is already active!");
+
+        List<ActivationRequest> allRequests = requestService.findAll();
+        for(ActivationRequest r : allRequests){
+            if(r.getUser().getId() == u.getId())
+                return ResponseEntity.badRequest().body("You have already sent a request!");
+        }
+
+        ActivationRequest activationRequest = new ActivationRequest();
+        activationRequest.setEmail(request.getEmail());
+        activationRequest.setMessage(request.getMessage());
+        activationRequest.setPhone(request.getPhone());
+        activationRequest.setDate(LocalDate.now());
+        activationRequest.setStatus(STATUS.PENDING);
+
 
         activationRequest.setUser(request.getUser());
         requestService.save(activationRequest);
@@ -159,7 +169,8 @@ public class ActivationRequestController {
 
             author.setShelves(shelves);
             authorService.save(author);
-            requestService.delete(id);
+            requestService.save(request);
+//            requestService.delete(id);
             return ResponseEntity.ok("Request approved!");
         }
     }
@@ -187,7 +198,9 @@ public class ActivationRequestController {
                 return ResponseEntity.badRequest().body("Error while sending email!");
             }
 
-            requestService.delete(id);
+            request.setStatus(STATUS.DENIED);
+            requestService.save(request);
+//            requestService.delete(id);
             return ResponseEntity.ok("Request deleted!");
         }
     }

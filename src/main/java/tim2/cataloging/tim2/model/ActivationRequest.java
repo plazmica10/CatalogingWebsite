@@ -3,6 +3,7 @@ package tim2.cataloging.tim2.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -21,7 +22,7 @@ public class ActivationRequest implements Serializable {
     private String message;
 
     @Column
-    private Date date;
+    private LocalDate date;
 
     @Enumerated(EnumType.ORDINAL)
     private STATUS status;
@@ -32,7 +33,7 @@ public class ActivationRequest implements Serializable {
     public ActivationRequest() {
     }
 
-    public ActivationRequest(String email, String phone, String message, Date date, STATUS status) {
+    public ActivationRequest(String email, String phone, String message, LocalDate date, STATUS status) {
         this.email = email;
         this.phone = phone;
         this.message = message;
@@ -72,11 +73,11 @@ public class ActivationRequest implements Serializable {
         this.message = message;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

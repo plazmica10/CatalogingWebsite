@@ -102,7 +102,7 @@ public class ShelfItemController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         if (shelf.getShelfItems().contains(shelfItem))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // kita vec na polici
 
         for (Shelf s : shelves) {
             if (Objects.equals(s.getId(), shelfId)) {
