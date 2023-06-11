@@ -80,6 +80,10 @@ public class UserController {
             existingUser.setDescription(user.getDescription());
         if (user.getPassword() != null)
             existingUser.setPassword(user.getPassword());
+        if (user.getEmail() != null)
+            existingUser.setEmail(user.getEmail());
+        if (user.getUsername() != null)
+            existingUser.setUsername(user.getUsername());
         userService.save(existingUser);
 
         return ResponseEntity.ok("Successfully updated user with id: " + id);

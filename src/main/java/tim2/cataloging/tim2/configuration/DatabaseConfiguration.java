@@ -139,7 +139,7 @@ public class DatabaseConfiguration {
         auth2.setBooks(books);
         authorRepository.save(auth2);
 
-        Book b3 = new Book("123", "Hari poter i zmajev kurac", "Photo", LocalDate.of(1954, 8,29), 423, "desc", 10);
+        Book b3 = new Book("123", "Harry Potter and the Chamber of Secretes", "Photo", LocalDate.of(1954, 8,29), 423, "desc", 10);
         b3.setGenre(g5);
         bookRepository.save(b3);
         ShelfItem si3 = new ShelfItem(b3);
@@ -149,25 +149,6 @@ public class DatabaseConfiguration {
         books.add(b3);
         auth1.setBooks(books);
         authorRepository.save(auth1);
-
-        // REVIEWS
-//        List<Review> reviews;
-//
-//        Review r1 = new Review(7, "Shit slaps", LocalDate.now(), u1);
-//        reviewRepository.save(r1);
-//        reviews = si1.getReviews();
-//        if (reviews == null) reviews = new ArrayList<Review>();
-//        reviews.add(r1);
-//        si1.setReviews(reviews);
-//        shelfItemRepository.save(si1);
-//
-//        Review r2 = new Review(7, "Shit slapzzzz", LocalDate.now(), u2);
-//        reviewRepository.save(r2);
-//        reviews = si1.getReviews();
-//        if (reviews == null) reviews = new ArrayList<Review>();
-//        reviews.add(r2);
-//        si1.setReviews(reviews);
-//        shelfItemRepository.save(si1);
 
         return true;
     }
