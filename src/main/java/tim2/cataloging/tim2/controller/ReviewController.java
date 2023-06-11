@@ -15,6 +15,7 @@ import tim2.cataloging.tim2.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/reviews")
@@ -82,8 +83,7 @@ public class ReviewController {
         Review review = new Review();
 
         // Set the date to the current date
-        Date currentDate = new Date();
-        review.setDate(currentDate);
+        review.setDate(LocalDate.now());
         review.setUser(loggedUser);
         review.setComment(reviewDto.getComment());
         review.setRating(reviewDto.getRating());
@@ -121,7 +121,8 @@ public class ReviewController {
                 existingReview.setComment(updatedReview.getComment());
             if (updatedReview.getRating() != 0)
                 existingReview.setRating(updatedReview.getRating());
-            existingReview.setDate(currentDate);
+
+            existingReview.setDate(LocalDate.now());
             reviewService.save(existingReview); // Save the updated review
 
             return ResponseEntity.ok("Review " + id + " updated successfully");

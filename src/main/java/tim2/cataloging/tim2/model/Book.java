@@ -3,6 +3,7 @@ package tim2.cataloging.tim2.model;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Book implements Serializable{
@@ -20,7 +21,7 @@ public class Book implements Serializable{
     private String photo;
 
     @Column
-    private Date date;
+    private LocalDate date;
 
     @Column
     private int pages;
@@ -35,7 +36,7 @@ public class Book implements Serializable{
     private Genre genre;
 
     // CONSTRUCTORS
-    public Book(String ISBN, String title, String photo, Date date, int pages, String description, int rating) {
+    public Book(String ISBN, String title, String photo, LocalDate date, int pages, String description, int rating) {
         this.ISBN = ISBN;
         this.title = title;
         this.photo = photo;
@@ -81,11 +82,11 @@ public class Book implements Serializable{
         this.photo = photo;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

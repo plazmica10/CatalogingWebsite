@@ -5,6 +5,7 @@ import tim2.cataloging.tim2.model.Review;
 import tim2.cataloging.tim2.model.User;
 
 import java.util.Date;
+import java.time.LocalDate;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ReviewDto {
@@ -14,14 +15,14 @@ public class ReviewDto {
 
     private String comment;
 
-    private Date date;
+    private LocalDate date;
 
     private User user;
 
     public ReviewDto(){
 
     }
-    public ReviewDto(Long id, int rating, String comment, Date date, User user) {
+    public ReviewDto(Long id, int rating, String comment, LocalDate date, User user) {
         this.id = id;
         this.rating = rating;
         this.comment = comment;
@@ -60,11 +61,11 @@ public class ReviewDto {
         this.comment = comment;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
