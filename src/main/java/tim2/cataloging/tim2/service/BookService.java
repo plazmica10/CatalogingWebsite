@@ -17,6 +17,10 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    public List<Book> findByGenreId(Long id) {
+        return bookRepository.findByGenreId(id);
+    }
+
     public Book findOne(Long id) {
         return bookRepository.findById(id).orElse(null);
     }
