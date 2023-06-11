@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tim2.cataloging.tim2.dto.ReviewDto;
 import tim2.cataloging.tim2.model.Review;
+import tim2.cataloging.tim2.service.BookService;
 import tim2.cataloging.tim2.service.ReviewService;
 import tim2.cataloging.tim2.model.*;
 import tim2.cataloging.tim2.service.ShelfItemService;
@@ -29,6 +30,9 @@ public class ReviewController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BookService bookService;
 
     //READ ALL
     @GetMapping("")
@@ -79,7 +83,10 @@ public class ReviewController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-
+        for(Review r : shelfItem.getReviews()){
+           if(r.getUser().getId() == loggedUser.getId())
+               return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
         Review review = new Review();
 
         // Set the date to the current date
@@ -96,7 +103,15 @@ public class ReviewController {
         shelfItemService.save(shelfItem);
         userService.save(loggedUser);
 
-
+        double rating = 0;
+        for (Review r : shelfItem.getReviews()) {
+            rating += r.getRating();
+        }
+        rating /= shelfItem.getReviews().size();
+        Book book = bookService.findOne(bookId);
+        book.setRating((int) rating);
+        bookService.save(book);
+        shelfItemService.save(shelfItem);
         return ResponseEntity.ok(review);
     }
 
