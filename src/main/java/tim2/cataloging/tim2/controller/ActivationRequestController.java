@@ -170,7 +170,7 @@ public class ActivationRequestController {
             author.setShelves(shelves);
             authorService.save(author);
             requestService.save(request);
-//            requestService.delete(id);
+            requestService.delete(id);
             return ResponseEntity.ok("Request approved!");
         }
     }
