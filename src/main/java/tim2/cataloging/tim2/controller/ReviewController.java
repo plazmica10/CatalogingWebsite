@@ -111,6 +111,7 @@ public class ReviewController {
         Book book = bookService.findOne(bookId);
         book.setRating((int) rating);
         bookService.save(book);
+        shelfItem.setBook(book);
         shelfItemService.save(shelfItem);
         return ResponseEntity.ok(review);
     }
