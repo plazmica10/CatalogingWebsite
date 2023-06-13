@@ -10,8 +10,15 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/books">Books</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/genres">Genres</a>
+          </li>
         </ul>
       </div>
+      <!-- <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchText">
+        <button class="btn btn-outline-success" type="submit" v-on:click="SearchBooks">Search</button>
+      </form> -->
     </div>
   </nav>
   <router-view/>
