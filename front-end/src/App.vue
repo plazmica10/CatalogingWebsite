@@ -15,15 +15,13 @@
           </li>
         </ul>
       </div>
-      <!-- <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search books" aria-label="Search" v-model="searchText">
-        <button class="btn btn-outline-success" type="submit" v-on:click="SearchBooks">Search</button>
-      </form> -->
       <div class = "searchBox">
-        <input autocomplete="off" name="q" type="text" placeholder="Search books" aria-label="Search books" aria-controls="searchResults" data-reactid=".zpb3cdbxye.1.0.3.0.0">
-        <button>
-          <font-awesome-icon icon="magnifying-glass" />
-        </button>
+        <form>
+            <input autocomplete="off" name="q" type="text" placeholder="Search books" v-model="searchText">
+          <button type="submit" v-on:click="SearchBooks">
+            <font-awesome-icon icon="magnifying-glass" />
+          </button>
+        </form>
       </div>
       <a class="lgn" href="/login">Login</a>
       <a class="lgn" href="/register">Register</a>
@@ -31,6 +29,22 @@
   </nav>
   <router-view/>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      searchText: ''
+    }
+  },
+  methods: {
+    SearchBooks: function() {
+      this.$store.commit("setSearchText", this.searchText);
+      this.$router.push({name: "BooksSearchView", params: {searchText: this.searchText}});
+    },
+  },
+}
+</script>
 
 <style>
 
