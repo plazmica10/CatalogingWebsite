@@ -29,5 +29,8 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+
+###CORS RUNER###
+tim2/cataloging/tim2/configuration/CorsRunner.java
 ### VS Code ###
 .vscode/
