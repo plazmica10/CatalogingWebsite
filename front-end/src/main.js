@@ -1,8 +1,6 @@
 import { createApp, h } from 'vue'
 import { createStore } from "vuex"
 import createPersistedState from 'vuex-persistedstate'
-import * as Cookies from 'js-cookie'
-import { getJSON } from 'js-cookie'
 import App from './App.vue'
 import router from './router'
 

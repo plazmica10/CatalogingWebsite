@@ -13,6 +13,9 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/genres">Genres</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/users">Users</a>
+          </li>
         </ul>
       </div>
       <div class = "searchBox">
