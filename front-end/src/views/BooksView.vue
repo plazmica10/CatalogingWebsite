@@ -5,9 +5,7 @@
       <thead>
       <tr>
         <th>Title</th>
-        <th>Author</th>
         <th>ISBN</th>
-        <th>Price</th>
       </tr>
       </thead>
       <tbody>
@@ -17,6 +15,10 @@
       </tr>
       </tbody>
     </table>
+    <form class="w-25 mt-2" role="search">
+      <input class="form-control me-2 mb-2" type="search" placeholder="Search" aria-label="Search" v-model="searchText">
+      <button class="btn btn-outline-success" type="submit" v-on:click="SearchBooks">Search</button>
+    </form>
   </div>
 </template>
 
@@ -27,6 +29,7 @@ export default {
   name: "BooksView",
 
   data: () => ({
+    searchText: "",
     books: [],
   }),
 
@@ -40,6 +43,11 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+  },
+  methods: {
+    SearchBooks: function() {
+      this.$router.push({name: "BooksSearchView", params: {searchText: this.searchText}});
+    },
   },
 };
 </script>
