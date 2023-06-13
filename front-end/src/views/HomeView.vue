@@ -9,7 +9,7 @@
     <div class="mb-3">
       <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
     </div>
-    <button type="submit" class="btn btn-primary" v-on:submit="">Submit</button>
+    <button type="submit" class="btn btn-primary" v-on:submit="">Login</button>
   </form>
 </template>
 

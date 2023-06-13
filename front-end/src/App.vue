@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Home</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,15 +16,28 @@
         </ul>
       </div>
       <!-- <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchText">
+        <input class="form-control me-2" type="search" placeholder="Search books" aria-label="Search" v-model="searchText">
         <button class="btn btn-outline-success" type="submit" v-on:click="SearchBooks">Search</button>
       </form> -->
+      <div class = "searchBox">
+        <input autocomplete="off" name="q" type="text" placeholder="Search books" aria-label="Search books" aria-controls="searchResults" data-reactid=".zpb3cdbxye.1.0.3.0.0">
+        <button>
+          <font-awesome-icon icon="magnifying-glass" />
+        </button>
+      </div>
+      <a class="lgn" href="/login">Login</a>
+      <a class="lgn" href="/register">Register</a>
     </div>
   </nav>
   <router-view/>
 </template>
 
 <style>
+
+body{
+  background-color: #FFFCF2 !important;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -37,12 +50,74 @@ nav {
   padding: 30px;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.lgn{
+  margin: 10px;
+  color: #EB5E28;
+  text-decoration: none;
 }
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+font-awesome-icon{
+  margin: 10px;
+  color: #EB5E28;
+}
+div router-link{
+  margin: 10px;
+}
+/* .searchBox {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  padding: 4px 26px 4px 8px;
+  border-radius: 10px;
+  width: 13%;
+  position: relative;
+}
+.searchBox input{
+  flex: 1;
+  padding-right: 50px;
+}
+.searchBox font-awesome-icon{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+} */
+.searchBox {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  padding: 4px 26px 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  width: 300px;
+  position: relative;
+}
+
+.searchBox input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 3px;
+  background-color: transparent;
+  caret-color: white;
+}
+.searchBox button{
+  background-color: transparent;
+  position: absolute;
+  top: 50%;
+  right: 10px; /* adjust as needed */
+  transform: translateY(-50%);
+  border: none;
+  color: #ccc;
+}
+.searchBox font-awesome-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 10px;
+  color: #ccc;
 }
 </style>

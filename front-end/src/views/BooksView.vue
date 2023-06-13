@@ -1,7 +1,6 @@
 <template>
   <div class="container" style="border: 1px solid red;">
     <h1>Books</h1>
-
     <div class="row justify-content-center">
       <div class="d-flex justify-content-center">
         <table>
@@ -27,7 +26,6 @@
           <button class="btn btn-outline-success" type="submit" v-on:click="SearchBooks">Search</button>
         </form>
     </div>
-    
   </div>
 </template>
 
