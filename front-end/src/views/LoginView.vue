@@ -1,5 +1,8 @@
 <template>
 <h1>Sign In</h1>
+<div v-if="error" class="alert alert-danger">
+    {{ error }}
+</div>
 <div class="wrapper">
     <form class="kanta" @submit.prevent="Login">
     <div class="kanturina">
@@ -29,6 +32,7 @@ export default {
             email: '',
             password: ''
         },
+        error: ''
     }),
 
     methods: {
@@ -39,12 +43,15 @@ export default {
                 console.log("Logged in: ", this.$store.state.loggedIn);
                 this.login = response.data;
                 console.log("Login: ", response);
+                this.$router.push({ name: "home", params: {} });
             } catch (error) {
                 if (error.response) {
                     console.log("Error status code: ", error.response.status);
                     console.log("Error response body: ", error.response.data);
+                    this.error = error.response.data;
                 } else {
                     console.log("Error: ", error.message);
+                    this.error = error.message;
                 }
             }
         }

@@ -103,7 +103,7 @@ public class UserController {
 
         User loggedUser = userService.login(loginDto.getEmail(), loginDto.getPassword());
         if (loggedUser == null)
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email or password is incorrect!");
 
         session.setAttribute("user", loggedUser);
         return ResponseEntity.ok("Successfully logged in!");
