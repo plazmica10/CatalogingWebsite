@@ -4,6 +4,7 @@ import BooksView from '../views/BooksView.vue'
 import BooksSearchView from '../views/BooksSearchView.vue'
 import GenresView from '../views/GenresView.vue'
 import UsersView from '../views/UsersView.vue'
+import LoginView from '../views/LoginView.vue'
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/users',
     name: 'userse',
     component: UsersView
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView
   }
 ]
 
