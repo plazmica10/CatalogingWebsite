@@ -1,10 +1,11 @@
 <template>
     <h1>Register</h1>
-    <div v-if="error" class="alert alert-danger">
-        {{ error }}
-    </div>
+    
     <div class="wrapper">
         <form class="kanta" @submit.prevent="Register">
+            <div v-if="error" class="alert alert-danger mx-2">
+                {{ error }}
+            </div>
         <div class="kanturina">
             <div class="form-group">
                 <label>Name</label>
