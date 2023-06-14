@@ -20,12 +20,16 @@ const store = createStore({
         storage: window.sessionStorage,
     })],
     state: {
-        searchText: ''
+        searchText: '',
+        loggedIn: false,
     },
     mutations: {
         setSearchText(state, searchText) {
             state.searchText = searchText;
-        }
+        },
+        setLoggedIn(state, loggedIn) {
+            state.loggedIn = loggedIn;
+        },
     }
 });
 

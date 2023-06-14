@@ -1,25 +1,55 @@
 <template>
 <h1>Sign In</h1>
 <div class="wrapper">
-    <form class="kanta">
+    <form class="kanta" @submit.prevent="Login">
     <div class="kanturina">
         <div class="form-group">
             <label>Email</label>
-            <input type="email" class="" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <input name="email" type="email" class="" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="loginDto.email">
         </div>
         <div class="form-group">
             <label>Password</label>
-            <input type="password" class="" id="exampleInputPassword1">
+            <input name="password" type="password" class="" id="exampleInputPassword1" v-model="loginDto.password">
         </div>
     </div>
-        <button type="submit" class="button" v-on:submit="">Sign in</button>
+        <button type="submit" class="button">Sign in</button>
     </form>
 </div>
 </template>
 
 
 <script>
+import axios from "axios";
 
+export default {
+    name: "LoginView",
+
+    data: () => ({
+        loginDto: {
+            email: '',
+            password: ''
+        },
+    }),
+
+    methods: {
+        async Login() {
+            try {
+                const response = await axios.post("http://localhost:9090/users/login", this.loginDto, {withCredentials: true});
+                this.$store.commit("setLoggedIn", true);
+                console.log("Logged in: ", this.$store.state.loggedIn);
+                this.login = response.data;
+                console.log("Login: ", response);
+            } catch (error) {
+                if (error.response) {
+                    console.log("Error status code: ", error.response.status);
+                    console.log("Error response body: ", error.response.data);
+                } else {
+                    console.log("Error: ", error.message);
+                }
+            }
+        }
+    }
+};
 </script>
 
 <style>
