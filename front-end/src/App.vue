@@ -26,14 +26,21 @@
           </button>
         </form>
       </div>
-      <a class="lgn" href="/login">Login</a>
-      <a class="lgn" href="/register">Register</a>
+      <span v-if="!this.$store.state.loggedIn">
+        <a class="lgn" href="/login?">Login</a>
+        <a class="lgn" href="/register">Register</a>
+      </span>
+      <span v-if="this.$store.state.loggedIn">
+        <button class="lgn" style="background: transparent; border: none;" v-on:click="logout">Logout</button>
+      </span>
     </div>
   </nav>
   <router-view/>
 </template>
 
 <script>
+import axios from "axios";
+//bla
 export default {
   data() {
     return {
@@ -45,7 +52,24 @@ export default {
       this.$store.commit("setSearchText", this.searchText);
       this.$router.push({name: "BooksSearchView", params: {searchText: this.searchText}});
     },
-  },
+    logout: function() {
+      this.$store.commit("setLoggedIn", false);
+      console.log(this.$store.state.logedIn);
+      axios
+        .post("http://localhost:9090/users/logout", {}, {withCredentials: true})
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log("Error status code: ", error.response.status);
+            console.log("Error response body: ", error.response.data);
+          } else {
+            console.log("Error: ", error.message);
+          }
+        });
+    }
+  }
 }
 </script>
 
