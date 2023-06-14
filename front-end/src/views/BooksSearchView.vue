@@ -18,16 +18,19 @@
 
 <script>
 import axios from "axios";
+
 export default {
     name: "BooksSearchView",
 
     data: () => ({
-    books: [],
+      searchText: '',
+      books: [],
     }),
 
     mounted: function() {
         axios
-            .get(`http://localhost:9090/books/search/${this.$route.params.searchText}`)
+            // .get(`http://localhost:9090/books/search/${this.$route.params.searchText}`)
+            .get(`http://localhost:9090/books/search/${this.$store.state.searchText}`)
             .then((res) => {
                 this.books = res.data;
                 console.log(this.books);
