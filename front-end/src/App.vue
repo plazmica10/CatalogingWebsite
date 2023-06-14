@@ -101,6 +101,7 @@ div router-link{
   padding: 3px;
   background-color: transparent;
   caret-color: white;
+  color: white;
 }
 .searchBox button{
   background-color: transparent;
