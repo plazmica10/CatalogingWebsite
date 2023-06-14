@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">Home</a>
+      <a class="navbar-brand" href="/">BetterReads</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -20,10 +20,12 @@
         <button class="btn btn-outline-success" type="submit" v-on:click="SearchBooks">Search</button>
       </form> -->
       <div class = "searchBox">
-        <input autocomplete="off" name="q" type="text" placeholder="Search books" aria-label="Search books" aria-controls="searchResults" data-reactid=".zpb3cdbxye.1.0.3.0.0">
-        <button>
-          <font-awesome-icon icon="magnifying-glass" />
-        </button>
+        <form>
+          <input autocomplete="off" name="q" type="text" placeholder="Search books" aria-label="Search books" aria-controls="searchResults" data-reactid=".zpb3cdbxye.1.0.3.0.0">
+          <button>
+            <font-awesome-icon icon="magnifying-glass" />
+          </button>
+        </form>
       </div>
       <a class="lgn" href="/login">Login</a>
       <a class="lgn" href="/register">Register</a>
@@ -66,25 +68,6 @@ font-awesome-icon{
 div router-link{
   margin: 10px;
 }
-/* .searchBox {
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-  padding: 4px 26px 4px 8px;
-  border-radius: 10px;
-  width: 13%;
-  position: relative;
-}
-.searchBox input{
-  flex: 1;
-  padding-right: 50px;
-}
-.searchBox font-awesome-icon{
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 10px;
-} */
 .searchBox {
   display: flex;
   align-items: center;
