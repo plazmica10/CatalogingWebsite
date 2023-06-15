@@ -31,7 +31,6 @@ export default {
   name: "UsersView",
 
   data: () => ({
-    searchText: "",
     users: [],
   }),
 
