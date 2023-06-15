@@ -23,7 +23,7 @@ export default {
   padding: 0;
   height: 95vh;
   background-image:linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url("../assets/cover.jpg");
-  border: 1px solid red;
+  /* border: 1px solid red; */
   background-size: cover;
 }
 
