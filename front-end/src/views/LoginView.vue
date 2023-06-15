@@ -41,15 +41,17 @@ export default {
             try {
                 const response = await axios.post("http://localhost:9090/users/login", this.loginDto, {withCredentials: true});
                 this.$store.commit("setLoggedIn", true);
-                console.log("Logged in: ", this.$store.state.loggedIn);
-                this.login = response.data;
-                console.log("Login: ", response);
+                // console.log("Logged in: ", this.$store.state.loggedIn);
+                this.$store.commit("setUser", response.data);
                 this.$router.push({ name: "home", params: {} });
             } catch (error) {
                 if (error.response) {
                     console.log("Error status code: ", error.response.status);
                     console.log("Error response body: ", error.response.data);
-                    this.error = error.response.data;
+                    if (error.response.status == 403)
+                        this.error = "You are already logged in!";
+                    if (error.response.status == 400)
+                        this.error = "Invalid credentials!";
                 } else {
                     console.log("Error: ", error.message);
                     this.error = error.message;

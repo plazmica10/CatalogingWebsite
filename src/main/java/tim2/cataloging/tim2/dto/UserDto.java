@@ -24,7 +24,6 @@ public class UserDto {
 
     private String email;
 
-
     private LocalDate date;
 
     private String photo;   //link to photo

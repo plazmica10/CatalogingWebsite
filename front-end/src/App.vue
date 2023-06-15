@@ -16,6 +16,9 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/users">Users</a>
           </li>
+          <li class="nav-item" v-if="this.$store.state.loggedIn">
+            <a class="nav-link active" aria-current="page" href="/shelves">Shelves</a>
+          </li>
         </ul>
       </div>
       <div class = "searchBox">
@@ -59,6 +62,7 @@ export default {
         .post("http://localhost:9090/users/logout", {}, {withCredentials: true})
         .then((res) => {
           console.log(res);
+          this.$router.push({name: "books"});
         })
         .catch((error) => {
           if (error.response) {
@@ -67,6 +71,7 @@ export default {
           } else {
             console.log("Error: ", error.message);
           }
+          this.$router.push({name: "books"});
         });
     }
   }
