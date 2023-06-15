@@ -22,6 +22,7 @@ const store = createStore({
     state: {
         searchText: '',
         loggedIn: false,
+        user: null,
     },
     mutations: {
         setSearchText(state, searchText) {
@@ -30,6 +31,9 @@ const store = createStore({
         setLoggedIn(state, loggedIn) {
             state.loggedIn = loggedIn;
         },
+        setUser(state, user) {
+            state.user = user;
+        }
     }
 });
 

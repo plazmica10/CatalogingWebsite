@@ -91,22 +91,22 @@ public class UserController {
 
     // LOGIN
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpSession session) {
+    public ResponseEntity<UserDto> login(@RequestBody LoginDto loginDto, HttpSession session) {
         System.out.println("Login request: " + loginDto.getEmail() + " " + loginDto.getPassword());
         System.out.printf("Session id: %s%n", session.getId());
         User user = (User) session.getAttribute("user");
         if (user != null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are already logged in!");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
         if (loginDto.getEmail().isEmpty() || loginDto.getPassword().isEmpty())
-            return ResponseEntity.badRequest().body("Invalid login data");
+            return ResponseEntity.badRequest().body(null);
 
         User loggedUser = userService.login(loginDto.getEmail(), loginDto.getPassword());
         if (loggedUser == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email or password is incorrect!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
         session.setAttribute("user", loggedUser);
-        return ResponseEntity.ok("Successfully logged in!");
+        return ResponseEntity.ok(new UserDto(loggedUser));
     }
 
     // LOGOUT
