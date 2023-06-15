@@ -13,7 +13,7 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/genres">Genres</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!this.$store.state.loggedIn">
             <a class="nav-link active" aria-current="page" href="/users">Users</a>
           </li>
           <li class="nav-item" v-if="this.$store.state.loggedIn">
@@ -36,6 +36,9 @@
       <span v-if="this.$store.state.loggedIn">
         <button class="lgn" style="background: transparent; border: none;" v-on:click="logout">Logout</button>
       </span>
+      <button class="profile" v-if="this.$store.state.loggedIn" v-on:click="userPage">
+        <font-awesome-icon icon="fa-regular fa-user"/>
+      </button>
     </div>
   </nav>
   <router-view/>
@@ -73,6 +76,9 @@ export default {
           }
           this.$router.push({name: "books"});
         });
+    },
+    userPage: function() {
+      this.$router.push({name: "userView"});
     }
   }
 }
@@ -147,5 +153,14 @@ div router-link{
   transform: translateY(-50%);
   left: 10px;
   color: #ccc;
+}
+.profile{
+  background-color: transparent;
+  border: none;
+  color: #EB5E28;
+  margin: 10px;
+  font-size: 20px;
+  padding: 0px;
+  margin-right: 20px;
 }
 </style>
