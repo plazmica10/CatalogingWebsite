@@ -1,27 +1,16 @@
 <template>
-    <table>
-      <thead>
-      <tr>
-        <th>Title</th>
-        <th>ISBN</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="book in books" :key="book.id">
-        <td>{{ book.title }}</td>
-        <td>{{ book.ISBN }}</td>
-      </tr>
-      </tbody>
-    </table>
+  <BooksComp :books="books"></BooksComp>
 </template>
 
 
 <script>
 import axios from "axios";
-
+import BooksComp from "@/components/BooksComp.vue";
 export default {
     name: "BooksSearchView",
-
+    components: {
+      BooksComp,
+    },
     data: () => ({
       searchText: '',
       books: [],
