@@ -13,8 +13,11 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/genres">Genres</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!this.$store.state.loggedIn">
             <a class="nav-link active" aria-current="page" href="/users">Users</a>
+          </li>
+          <li class="nav-item" v-if="this.$store.state.loggedIn">
+            <a class="nav-link active" aria-current="page" href="/shelves">Shelves</a>
           </li>
         </ul>
       </div>
@@ -26,14 +29,24 @@
           </button>
         </form>
       </div>
-      <a class="lgn" href="/login">Login</a>
-      <a class="lgn" href="/register">Register</a>
+      <span v-if="!this.$store.state.loggedIn">
+        <a class="lgn" href="/login?">Login</a>
+        <a class="lgn" href="/register">Register</a>
+      </span>
+      <span v-if="this.$store.state.loggedIn">
+        <button class="lgn" style="background: transparent; border: none;" v-on:click="logout">Logout</button>
+      </span>
+      <button class="profile" v-if="this.$store.state.loggedIn" v-on:click="userPage">
+        <font-awesome-icon icon="fa-regular fa-user"/>
+      </button>
     </div>
   </nav>
   <router-view/>
 </template>
 
 <script>
+import axios from "axios";
+//bla
 export default {
   data() {
     return {
@@ -45,7 +58,29 @@ export default {
       this.$store.commit("setSearchText", this.searchText);
       this.$router.push({name: "BooksSearchView", params: {searchText: this.searchText}});
     },
-  },
+    logout: function() {
+      this.$store.commit("setLoggedIn", false);
+      console.log(this.$store.state.logedIn);
+      axios
+        .post("http://localhost:9090/users/logout", {}, {withCredentials: true})
+        .then((res) => {
+          console.log(res);
+          this.$router.push({name: "books"});
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log("Error status code: ", error.response.status);
+            console.log("Error response body: ", error.response.data);
+          } else {
+            console.log("Error: ", error.message);
+          }
+          this.$router.push({name: "books"});
+        });
+    },
+    userPage: function() {
+      this.$router.push({name: "userView"});
+    }
+  }
 }
 </script>
 
@@ -118,5 +153,14 @@ div router-link{
   transform: translateY(-50%);
   left: 10px;
   color: #ccc;
+}
+.profile{
+  background-color: transparent;
+  border: none;
+  color: #EB5E28;
+  margin: 10px;
+  font-size: 20px;
+  padding: 0px;
+  margin-right: 20px;
 }
 </style>

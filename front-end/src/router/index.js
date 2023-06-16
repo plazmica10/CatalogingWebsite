@@ -5,7 +5,9 @@ import BooksSearchView from '../views/BooksSearchView.vue'
 import GenresView from '../views/GenresView.vue'
 import UsersView from '../views/UsersView.vue'
 import LoginView from '../views/LoginView.vue'
-
+import RegisterView from '../views/RegisterView.vue'
+import ShelvesView from '../views/ShelvesView.vue'
+import UserView from '../views/UserView.vue'
 const routes = [
   {
     path: '/',
@@ -33,9 +35,24 @@ const routes = [
     component: UsersView
   },
   {
+    path: '/user',
+    name: 'userView',
+    component: UserView
+  },
+  {
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: RegisterView
+  },
+  {
+    path: '/shelves',
+    name: 'shelves',
+    component: ShelvesView
   }
 ]
 
