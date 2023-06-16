@@ -14,23 +14,38 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 /* import specific icons */
 import { faMagnifyingGlass, faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { faUser } from '@fortawesome/free-regular-svg-icons'
 
 const store = createStore({
     plugins: [createPersistedState({
         storage: window.sessionStorage,
     })],
     state: {
-        searchText: ''
+        searchText: '',
+        loggedIn: false,
+        user: null,
     },
     mutations: {
         setSearchText(state, searchText) {
             state.searchText = searchText;
+        },
+        setLoggedIn(state, loggedIn) {
+            state.loggedIn = loggedIn;
+        },
+        setUser(state, user) {
+            state.user = {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                // add other necessary fields here
+            };
         }
     }
 });
 
 /* add icons to the library */
-library.add(faUserSecret,faMagnifyingGlass)
+library.add(faUserSecret,faMagnifyingGlass, faUser)
 
 createApp(App).use(router).use(store).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
 // createApp({
