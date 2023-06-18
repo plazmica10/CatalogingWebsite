@@ -110,7 +110,10 @@ public class ShelfItemController {
                     s.setShelfItems(new ArrayList<ShelfItem>());
 
                 s.getShelfItems().add(shelfItem);
-
+                List<ShelfItem> temp = s.getShelfItems();
+                s.setShelfItems(null);
+                shelfService.save(s);
+                s.setShelfItems(temp);
                 shelfService.save(s);
                 loggedUser.setShelves(shelves);
                 userService.save(loggedUser);
@@ -147,6 +150,10 @@ public class ShelfItemController {
             for (Shelf s : shelves) {
                 if (s.getShelfItems() != null) {
                     s.getShelfItems().removeIf(si -> si.getId().equals(shelfItemId));
+                    List<ShelfItem> temp = s.getShelfItems();
+                    s.setShelfItems(null);
+                    shelfService.save(s);
+                    s.setShelfItems(temp);
                     shelfService.save(s);
                 }
             }
@@ -156,6 +163,10 @@ public class ShelfItemController {
                 if (Objects.equals(s.getId(), shelfId)) {
                     if (s.getShelfItems() != null) {
                         s.getShelfItems().removeIf(si -> si.getId().equals(shelfItemId));
+                        List<ShelfItem> temp = s.getShelfItems();
+                        s.setShelfItems(null);
+                        shelfService.save(s);
+                        s.setShelfItems(temp);
                         shelfService.save(s);
                     }
                 }
