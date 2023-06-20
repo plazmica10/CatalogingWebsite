@@ -8,6 +8,8 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import ShelvesView from '../views/ShelvesView.vue'
 import UserView from '../views/UserView.vue'
+import BookView from '../views/BookView.vue'
+
 const routes = [
   {
     path: '/',
@@ -53,6 +55,11 @@ const routes = [
     path: '/shelves',
     name: 'shelves',
     component: ShelvesView
+  },
+  {
+    path: '/book',
+    name: 'book',
+    component: BookView
   }
 ]
 

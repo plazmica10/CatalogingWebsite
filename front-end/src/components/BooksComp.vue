@@ -6,7 +6,7 @@
          <div class="book-container" v-for="book in books" :key="book.id">
            <div class="book">
              <img :src="require('@/assets/' + book.photo)">
-             <div class="book-details">
+             <div v-on:click="bookDetails(book)" class="book-details">
                {{ book.title }}
              </div>
            </div>
@@ -20,6 +20,11 @@
 export default {
   name: "BooksComp",
   props: ["books"],
+  methods: {
+    bookDetails(book) {
+      this.$router.push({name: "book", params: {id: book.id}});
+    },
+  },
 };
 </script>
 
