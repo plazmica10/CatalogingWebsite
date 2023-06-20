@@ -9,6 +9,7 @@ import RegisterView from '../views/RegisterView.vue'
 import ShelvesView from '../views/ShelvesView.vue'
 import UserView from '../views/UserView.vue'
 import BookView from '../views/BookView.vue'
+import AuthorRegisterView from '../views/AuthorRegisterView.vue'
 
 const routes = [
   {
@@ -60,6 +61,11 @@ const routes = [
     path: '/book',
     name: 'book',
     component: BookView
+  },
+  {
+    path: '/create-author',
+    name: 'author',
+    component: AuthorRegisterView
   }
 ]
 
