@@ -124,18 +124,18 @@ public class UserController {
 
     // REGISTER
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody RegisterDto userRequest,HttpSession session){
+    public ResponseEntity<User> registerUser(@RequestBody RegisterDto userRequest,HttpSession session){
         User loggedUser = (User) session.getAttribute("user");
         if(loggedUser != null){
-            return ResponseEntity.badRequest().body("You are already logged in!");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
         try {
             User user = userService.findByEmail(userRequest.getEmail());
             if (user != null)
-                return ResponseEntity.badRequest().body("User with email: " + userRequest.getEmail() + " already exists!");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
             user = userService.findByUsername(userRequest.getUsername());
             if (user != null)
-                return ResponseEntity.badRequest().body("User with username: " + userRequest.getUsername() + " already exists!");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
             user = new User();
             user.setName(userRequest.getName());
@@ -147,7 +147,7 @@ public class UserController {
 
             User newUser = userService.register(user);
             if(newUser == null)
-                return ResponseEntity.badRequest().body("Failed to register user: " + userRequest.getUsername());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
 
             Shelf wantToRead = new Shelf("Want to read", true);
@@ -166,9 +166,9 @@ public class UserController {
             userService.save(newUser);
 
             session.setAttribute("user", newUser);
-            return ResponseEntity.ok("User registered successfully!");
+            return ResponseEntity.ok(newUser);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register user: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
     //get shelves of a user

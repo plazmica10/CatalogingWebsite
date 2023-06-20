@@ -38,7 +38,7 @@
     
 <script>
     import axios from "axios";
-    
+
     export default {
         name: "LoginView",
     
@@ -69,6 +69,8 @@
                 try {
                     const response = await axios.post("http://localhost:9090/users/register", this.registerDto, {withCredentials: true});
                     this.$store.commit("setLoggedIn", true);
+                    this.$store.commit("setUser", response.data);
+                    console.log("User: ", this.$store.state.user);
                     console.log("Registered: ", this.$store.state.loggedIn);
                     this.login = response.data;
                     console.log("Login: ", response);
