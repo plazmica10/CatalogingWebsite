@@ -19,6 +19,10 @@
           <li class="nav-item" v-if="this.$store.state.loggedIn">
             <a class="nav-link active" aria-current="page" href="/shelves">Shelves</a>
           </li>
+
+          <li class="nav-item" v-if="this.$store.state.user.role == 'ADMIN' && this.$store.state.loggedIn">
+            <a class="nav-link active" aria-current="page" href="/create-author">Add Author</a>
+          </li>
         </ul>
       </div>
       <div class = "searchBox">
