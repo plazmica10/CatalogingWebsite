@@ -23,7 +23,12 @@ const store = createStore({
     state: {
         searchText: '',
         loggedIn: false,
-        user: null,
+        user:{
+            id: null,
+            name: null,
+            email: null,
+            role: null,
+        },
         //test
         userData:null,
     },
