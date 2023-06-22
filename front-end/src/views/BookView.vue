@@ -5,9 +5,9 @@
             <div class="d-flex justify-content-center">
                 <div class="book-container">
                     <div class="book">
-                        <!-- <img :src="require('@/assets/' + this.book.photo)"> -->
+                        <!-- <img :src="require(photoLink)"> -->
                         <!-- <img v-if="isReady" :src="require(this.photoLink)"> -->
-                        <img :src="photoLink" alt="">
+                        <!-- <img :src="photoLink" alt=""> -->
 
                         <p>{{ photoLink }}</p>
                         <div class="book-details">
