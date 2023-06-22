@@ -5,11 +5,11 @@
             <div class="d-flex justify-content-center">
                 <div class="book-container">
                     <div class="book">
-                        <!-- <img :src="require('@/assets/' + this.book.photo)"> -->
+                        <img :src="book.photo">
+                        <!-- <img :src="require(`@/assets/${book.photo}`)"> -->
                         <!-- <img v-if="isReady" :src="require(this.photoLink)"> -->
-                        <img :src="photoLink" alt="">
-
-                        <p>{{ photoLink }}</p>
+                        <!-- <img :src="photoLink" alt="">
+                        <p>{{ photoLink }}</p> -->
                         <div class="book-details">
                             <ul>
                                 <li>Title: {{ this.book.title }}</li>
@@ -32,18 +32,28 @@
 import axios from "axios";
 
 export default {
-    name: "BookView",
+    name: "book",
     data: () => ({
-        book: {},
+        book: {
+            title: "",
+            ISBN: "",
+            date: "",
+            pages: "",
+            description: "",
+            rating: "",
+            photo: "",
+            genre: "",
+        },
         photoLink: "",
         isReady: false,
         genre: {},
     }),
     mounted:async function () {
+        const id = this.$route.params.id;
         axios
-            .get(`http://localhost:9090/books/${this.$route.params.id}`)
+            .get("http://localhost:9090/books/" + id, { withCredentials: true })
             .then((res) => {
-                // console.log(res.data);
+            console.log(res.data);
             // this.book = JSON.parse(res.data);
             this.book = res.data;
             this.genre = this.book.genre;

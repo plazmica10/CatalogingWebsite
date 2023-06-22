@@ -117,7 +117,7 @@ public class DatabaseConfiguration {
         // BOOKS
         List<Book> books;
 
-        Book b1 = new Book("0747532745", "Harry Potter and the Philosopher's Stone", "PS.jpg", LocalDate.of(2000, 3,25), 223, "desc", 0);
+        Book b1 = new Book("0747532745", "Harry Potter and the Philosopher's Stone", "https://media.harrypotterfanzone.com/sorcerers-stone-us-childrens-edition.jpg", LocalDate.of(2000, 3,25), 223, "desc", 0);
         b1.setGenre(g5);
         bookRepository.save(b1);
         ShelfItem si1 = new ShelfItem(b1);
@@ -128,7 +128,7 @@ public class DatabaseConfiguration {
         auth1.setBooks(books);
         authorRepository.save(auth1);
 
-        Book b2 = new Book("0345339738", "The Fellowship of the Ring", "LOTR.jpg", LocalDate.of(1954, 8,29), 423, "desc", 0);
+        Book b2 = new Book("0345339738", "The Fellowship of the Ring", "https://churchfieldsjunior.com/wp-content/uploads/2017/10/lord-of-the-rings-tolkien.jpg", LocalDate.of(1954, 8,29), 423, "desc", 0);
         b2.setGenre(g5);
         bookRepository.save(b2);
         ShelfItem si2 = new ShelfItem(b2);
@@ -139,7 +139,7 @@ public class DatabaseConfiguration {
         auth2.setBooks(books);
         authorRepository.save(auth2);
 
-        Book b3 = new Book("123", "Harry Potter and the Chamber of Secretes", "CS.jpg", LocalDate.of(1954, 8,29), 423, "desc", 0);
+        Book b3 = new Book("123", "Harry Potter and the Chamber of Secretes", "https://m.media-amazon.com/images/I/81THMAxo+pL._AC_UF1000,1000_QL80_.jpg", LocalDate.of(1954, 8,29), 423, "desc", 0);
         b3.setGenre(g5);
         bookRepository.save(b3);
         ShelfItem si3 = new ShelfItem(b3);

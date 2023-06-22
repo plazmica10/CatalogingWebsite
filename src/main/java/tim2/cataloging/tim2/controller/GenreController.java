@@ -49,17 +49,23 @@ public class GenreController {
 
     //CREATE
     @PostMapping("")
-    public ResponseEntity<String> saveGenre(@RequestBody Genre genre, HttpSession session){
+    public ResponseEntity<Genre> saveGenre(@RequestBody Genre genre, HttpSession session){
         User loggedUser = (User) session.getAttribute("user");
         if (loggedUser == null)
-            return ResponseEntity.badRequest().body("You must be logged in to add genres");
+            return ResponseEntity.badRequest().body(null);
 
         if(loggedUser.getRole() != ROLE.ADMIN)
-            return ResponseEntity.badRequest().body("Only admin can add genres");
+            return ResponseEntity.badRequest().body(null);
 
-        genreService.save(genre);
+        for(Genre g : genreService.findAll()){
+            if(g.getName().equals(genre.getName()))
+                return ResponseEntity.badRequest().body(null);
+        }
+        Genre g = new Genre();
+        g.setName(genre.getName());
+        genreService.save(g);
 
-        return ResponseEntity.ok("Genre added successfully");
+        return ResponseEntity.ok(g);
     }
 
     //UPDATE

@@ -5,7 +5,8 @@
        <div class="d-flex justify-content-center">
          <div class="book-container" v-for="book in books" :key="book.id">
            <div class="book">
-             <img :src="require('@/assets/' + book.photo)">
+             <!-- <img :src="require('@/assets/' + book.photo)"> -->
+              <img :src="book.photo">
              <div v-on:click="bookDetails(book)" class="book-details">
                {{ book.title }}
              </div>
