@@ -74,6 +74,7 @@ public class ShelfController {
         }
 
         shelf.setPrimary(false);
+        shelf.setShelfItems(new ArrayList<>());
         for (Shelf s : loggedUser.getShelves()) {
             if (s.getName().equals(shelf.getName())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
