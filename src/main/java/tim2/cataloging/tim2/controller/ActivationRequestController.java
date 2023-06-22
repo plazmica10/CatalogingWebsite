@@ -2,8 +2,10 @@ package tim2.cataloging.tim2.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import tim2.cataloging.tim2.dto.ActivationDto;
 import tim2.cataloging.tim2.model.*;
 import tim2.cataloging.tim2.service.*;
@@ -71,31 +73,31 @@ public class ActivationRequestController {
         }
         return ResponseEntity.ok(dtos);
     }
-    @PostMapping("")
-    public ResponseEntity<String> send(@RequestBody ActivationRequest request, HttpSession session) {
+    @PostMapping("/{id}")//user id
+    public ResponseEntity<ActivationRequest> send(@RequestBody ActivationRequest request, HttpSession session, @PathVariable(name = "id") Long id) {
         User loggedUser = (User) session.getAttribute("user");
         if (loggedUser != null)
-            return ResponseEntity.badRequest().body("You cant send request while logged in!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         //ako je vec poslat zahtev sa istim mejlom ne salji ga opet
         ActivationRequest existingRequest = requestService.findByEmail(request.getEmail());
         if (existingRequest != null)
-            return ResponseEntity.badRequest().body("You have already sent a request!");
+            return ResponseEntity.badRequest().body(null);
 
 
-        User u = userService.findOne(request.getUser().getId());
+        User u = userService.findOne(id);
         if(u == null)
-            return ResponseEntity.badRequest().body("User with id: " + request.getUser().getId() + " does not exist!");
+            return ResponseEntity.badRequest().body(null);
         if(u.getRole() != ROLE.AUTHOR)
-            return ResponseEntity.badRequest().body("Can't activate anyone except authors!");
+            return ResponseEntity.badRequest().body(null);
         Author author = authorService.findOne(u.getId());
         if(author.isActive())
-            return ResponseEntity.badRequest().body("Author with id: " + u.getId() + " is already active!");
+            return ResponseEntity.badRequest().body(null);
 
         List<ActivationRequest> allRequests = requestService.findAll();
         for(ActivationRequest r : allRequests){
             if(r.getUser().getId() == u.getId())
-                return ResponseEntity.badRequest().body("You have already sent a request!");
+                return ResponseEntity.badRequest().body(null);
         }
 
         ActivationRequest activationRequest = new ActivationRequest();
@@ -105,10 +107,9 @@ public class ActivationRequestController {
         activationRequest.setDate(LocalDate.now());
         activationRequest.setStatus(STATUS.PENDING);
 
-
-        activationRequest.setUser(request.getUser());
+        activationRequest.setUser((User)author);
         requestService.save(activationRequest);
-        return ResponseEntity.ok("Request sent!");
+        return ResponseEntity.ok(activationRequest);
     }
 
     @PostMapping("/{id}/approve")
@@ -200,8 +201,8 @@ public class ActivationRequestController {
 
             request.setStatus(STATUS.DENIED);
             requestService.save(request);
-//            requestService.delete(id);
-            return ResponseEntity.ok("Request deleted!");
+            requestService.delete(id);
+            return ResponseEntity.ok("Request denied!");
         }
     }
 }

@@ -13,10 +13,11 @@
                 </thead>
                 <tbody>
                     <tr v-for="user in users" :key="user.id">
-                        <td>{{ user.username }}</td>
+                      <td><a href="#" @click="viewUser(user.id)">{{ user.username }}</a></td>
                         <td>{{ user.name }}</td>
                         <td>{{ user.surname }}</td>
                         <td>{{ user.description }}</td>
+                        <td>{{ user.role }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -44,38 +45,18 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-  }
+  },
+  methods: {
+    viewUser: function (userId) {
+      try{
+        this.$router.push({ name: "UserView", params: { id: userId } });
+      }catch(error){
+        console.log(error);
+      }
+    },
+  },
 };
 </script>
 
 <style>
-body{
-  background-color: #FFFCF2 !important;
-}
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-.lgn{
-  margin: 10px;
-  color: #EB5E28;
-  text-decoration: none;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-font-awesome-icon{
-  margin: 10px;
-  color: #ebebeb;
-}
 </style>
