@@ -1,5 +1,12 @@
 <template>
     <div>
+        <button v-if="this.$store.state.user.role == 'ADMIN'" class="btn" style="background-color: #252422; color: white;text-decoration:double;height: 3em;" @click="showDialog = !showDialog">Add Genre</button>
+                <dialog v-if="showDialog" role="dialog" aria-modal="true" open>
+                    <form @submit.prevent="submit">
+                        <input type="text" v-model="name" placeholder="Name" required>
+                        <button type="submit">Add</button>
+                </form>
+            </dialog>
         <div class="row justify-content-center">
         <div class="d-flex justify-content-center">
             <table>
@@ -14,13 +21,6 @@
             </tr>
             </tbody>
             </table>
-            <button class="btn" style="background-color: #252422; color: white;text-decoration:double;height: 3em;" @click="showDialog = true">Add Genre</button>
-                <dialog v-if="showDialog" role="dialog" aria-modal="true" open>
-                    <form @submit.prevent="submit">
-                        <input type="text" v-model="name" placeholder="Name" required>
-                        <button type="submit">Add</button>
-                </form>
-            </dialog>
         </div>
         </div>
     </div>
