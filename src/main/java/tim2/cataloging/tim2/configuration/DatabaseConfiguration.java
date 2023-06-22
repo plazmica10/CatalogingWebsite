@@ -111,7 +111,7 @@ public class DatabaseConfiguration {
         authorRepository.save(auth2);
 
         // ADMINS
-        User admin1 = new User("Shef", "Gordon", "Ramsay", "idiotsandwich@gmail.com", "123pass123", LocalDate.of(1913, 6, 9), "photo", "desc", ROLE.ADMIN);
+        User admin1 = new User("Shef", "Gordon", "Ramsay", "admin@gmail.com", "123", LocalDate.of(1913, 6, 9), "photo", "desc", ROLE.ADMIN);
         userRepository.save(admin1);
 
         // BOOKS

@@ -44,6 +44,7 @@ public class AuthorController{
         newAuthor.setRole(ROLE.AUTHOR);
         newAuthor.setName(autor.getName());
         newAuthor.setSurname(autor.getSurname());
+        newAuthor.setUsername(autor.getUsername());
         authorService.save(newAuthor);
         return ResponseEntity.ok().build();
     }

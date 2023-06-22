@@ -23,6 +23,9 @@
           <li class="nav-item" v-if="this.$store.state.user.role == 'ADMIN' && this.$store.state.loggedIn">
             <a class="nav-link active" aria-current="page" href="/create-author">Add Author</a>
           </li>
+          <li v-if="this.$store.state.user.role == 'ADMIN' && this.$store.state.loggedIn">
+            <a class="nav-link active" aria-current="page" href="/requests">Requests</a>
+          </li>
         </ul>
       </div>
       <div class = "searchBox">
@@ -82,7 +85,7 @@ export default {
         });
     },
     userPage: function() {
-      this.$router.push({name: "userView"});
+      this.$router.push({name: "UserView", params: {id: this.$store.state.user.id}});
     }
   }
 }
