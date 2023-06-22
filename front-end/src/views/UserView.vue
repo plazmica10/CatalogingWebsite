@@ -39,6 +39,8 @@ export default {
     user: null,
   }),
   mounted: function() {
+    //TRENUTNO NE RADI JER VADI SAMO IZ LOGOVANOG ID TAKO DA RADI SAMO ONAJ 
+    //KAD LOGOVAN KLIKNE NA ONU IKONICU U NAV
     const userId = this.$store.state.user.id;
     axios
         .get("http://localhost:9090/users/" + userId, {withCredentials: true})

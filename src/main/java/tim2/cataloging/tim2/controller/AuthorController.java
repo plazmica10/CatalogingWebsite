@@ -32,7 +32,7 @@ public class AuthorController{
         return ResponseEntity.ok(authorService.findAll());
     }
     @PostMapping("")
-    public ResponseEntity<String> createAuthor(@RequestBody AuthorDto autor, HttpSession session) {
+    public ResponseEntity<Author> createAuthor(@RequestBody AuthorDto autor, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
         if (loggedUser == null)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
