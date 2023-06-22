@@ -9,6 +9,8 @@
                         <th>Name</th>
                         <th>Surname</th>
                         <th>Description</th>
+                        <th>Role</th>
+                        <th>Edit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -18,6 +20,7 @@
                         <td>{{ user.surname }}</td>
                         <td>{{ user.description }}</td>
                         <td>{{ user.role }}</td>
+                        <td v-if="user.role=='AUTHOR'"><router-link :to="{ name: 'edit-author', params: { id: user.id }}">Edit Author</router-link></td>
                     </tr>
                 </tbody>
             </table>
@@ -33,6 +36,9 @@ export default {
 
   data: () => ({
     users: [],
+    authors: [{
+      status: "",
+    }],
   }),
 
   mounted: function() {

@@ -13,7 +13,7 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/genres">Genres</a>
           </li>
-          <li class="nav-item" v-if="!this.$store.state.loggedIn">
+          <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/users">Users</a>
           </li>
           <li class="nav-item" v-if="this.$store.state.loggedIn">
