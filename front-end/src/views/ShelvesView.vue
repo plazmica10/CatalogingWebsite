@@ -2,21 +2,16 @@
     <div class="container" style="border: 1px solid red;">
      <h1>Shelves</h1>
      <div>
-          <button class="btn btn-primary" @click="showDialog = true; console.log(showDialog)">Add Shelf</button>
-          <dialog class="" style="z-index: 9999;" v-if="this.showDialog" aria-modal="true" role="dialog" open>
-            <form @submit.prevent="addShelf">
-                <input type="text" v-model="newShelf.name" placeholder="Shelf name" required>
-                <button type="submit">Send</button>
-            </form>
-            <button @click="showDialog = false">Close</button>
-          </dialog>
+          <button class="btn btn-primary" v-on:click="showAddShelf()">Add Shelf</button>
      </div>
      <div v-for="shelf in shelves" :key="shelf.id">
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 {{ shelf.name }}
+
                 <span>
-                    <button class="btn btn-danger" style="margin-right: 0.7em;" @click="deleteShelf(shelf.id)">Delete</button>
+                    <button v-if="shelf.isPrimary === false" class="btn btn-warning" style="margin-right: 0.7em;" v-on:click="showUpdateShelf(shelf.id)">Update</button>
+                    <button v-if="shelf.isPrimary === false" class="btn btn-danger" style="margin-right: 0.7em;" @click="deleteShelf(shelf.id)">Delete</button>
                     <span class="badge rounded-pill text-bg-primary">{{ shelf.shelfItems.length }}</span>
                 </span>
             </li>
@@ -28,16 +23,35 @@
         </ul>
      </div>
    </div>
+
+   <dialog class="" id="addShelfModal">
+        <form @submit.prevent="addShelf">
+            <input type="text" v-model="newShelf.name" placeholder="Shelf name" required>
+            <button type="submit">Create</button>
+        </form>
+        <button v-on:click="closeAddShelf()">Close</button>
+    </dialog>
+
+    <dialog id="updateShelfModal">
+        <form @submit.prevent="updateShelf">
+            <input type="text" v-model="newName" placeholder="Shelf name" required>
+            <button type="submit">Update</button>
+        </form>
+        <button v-on:click="closeUpdateShelf()">Close</button>
+    </dialog>
  </template>
  
  <script>
  import axios from "axios";
+
+ 
  
  export default {
    name: "ShelvesView",
  
    data: () => ({
-        showDialog: false,
+        idForUpdate: 0,
+        newName: "",
         newShelf: {
             name: "",
         },
@@ -45,7 +59,24 @@
    }),
  
    mounted: function() {
-     this.fetchShelves();
+        this.fetchShelves();
+
+        const addShelfModal = document.getElementById("addShelfModal");
+        const updateShelfModal = document.getElementById("updateShelfModal");
+
+        addShelfModal.addEventListener("click", (e) => {
+            const dialogDimensions = addShelfModal.getBoundingClientRect();
+            if (e.clientX < dialogDimensions.left || e.clientX > dialogDimensions.right || e.clientY < dialogDimensions.top || e.clientY > dialogDimensions.bottom) {
+                addShelfModal.close();
+            }
+        });
+
+        updateShelfModal.addEventListener("click", (e) => {
+            const dialogDimensions = updateShelfModal.getBoundingClientRect();
+            if (e.clientX < dialogDimensions.left || e.clientX > dialogDimensions.right || e.clientY < dialogDimensions.top || e.clientY > dialogDimensions.bottom) {
+                updateShelfModal.close();
+            }
+        });
    },
 
    methods: {
@@ -54,7 +85,7 @@
          .get("http://localhost:9090/shelves", {withCredentials: true})
          .then((res) => {
             this.shelves = res.data;
-            console.log(this.shelves);
+            // console.log(this.shelves);
 
             this.shelves.forEach(shelf => {
                 axios
@@ -71,6 +102,25 @@
          .catch((error) => {
            console.log(error);
          });
+        },
+
+        showAddShelf: function() {
+            const addShelfModal = document.getElementById("addShelfModal");
+            addShelfModal.showModal();
+        },
+        closeAddShelf: function() {
+            const addShelfModal = document.getElementById("addShelfModal");
+            addShelfModal.close();
+        },
+
+        showUpdateShelf: function(idSh) {
+            this.idForUpdate = idSh;
+            const updateShelfModal = document.getElementById("updateShelfModal");
+            updateShelfModal.showModal();
+        },
+        closeUpdateShelf: function() {
+            const updateShelfModal = document.getElementById("updateShelfModal");
+            updateShelfModal.close();
         },
 
         addShelf: function() {
@@ -97,10 +147,26 @@
                     console.error(error);
                     this.error = 'An error occurred while adding the shelf.';
                 });
+        },
+
+        updateShelf: function(id) {
+            axios
+                .put("http://localhost:9090/shelves/" + this.idForUpdate, {name: this.newName}, {withCredentials: true})
+                .then((res) => {
+                    console.log(res.data);
+                    this.fetchShelves();
+                })
+                .catch((error) => {
+                    console.error(error);
+                    this.error = 'An error occurred while updateing the shelf.';
+                });
         }
    }
  };
  </script>
  
  <style>
+.dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.548);
+}
  </style>
