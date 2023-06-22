@@ -23,7 +23,14 @@ const store = createStore({
     state: {
         searchText: '',
         loggedIn: false,
-        user: null,
+        user:{
+            id: null,
+            name: null,
+            email: null,
+            role: null,
+        },
+        //test
+        userData:null,
     },
     mutations: {
         setSearchText(state, searchText) {
@@ -40,7 +47,10 @@ const store = createStore({
                 role: user.role,
                 // add other necessary fields here
             };
-        }
+        },
+        setUserData(state, userData) {
+            state.userData = userData;
+        }   
     }
 });
 

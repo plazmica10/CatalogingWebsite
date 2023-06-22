@@ -43,7 +43,10 @@ export default {
                 this.$store.commit("setLoggedIn", true);
                 // console.log("Logged in: ", this.$store.state.loggedIn);
                 this.$store.commit("setUser", response.data);
-                this.$router.push({ name: "home", params: {} });
+                if(this.$store.state.user.role == "ADMIN")
+                  this.$router.push({ name: "home", params: {} });
+                else
+                  this.$router.push({ name: "shelves", params: {} });
             } catch (error) {
                 if (error.response) {
                     console.log("Error status code: ", error.response.status);
