@@ -1,6 +1,13 @@
 <template>
     <div class="container" style="border: 1px solid red;">
      <h1>Shelves</h1>
+     <div>
+          <button class="btn btn-primary" @click="showDialog = true; console.log(showDialog)">Add Shelf</button>
+          <dialog style="modal-dialog modal-dialog-centered" v-if="this.showDialog" role="dialog">
+            <p>kita</p>
+            <button @click="showDialog = false">Close</button>
+          </dialog>
+     </div>
      <div v-for="shelf in shelves" :key="shelf.id">
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -14,13 +21,6 @@
             </ul>
         </ul>
      </div>
-     <!-- <div class="row justify-content-center">
-       <div class="d-flex justify-content-center">
-         <div class="book-container" v-for="shelf in shelves" :key="shelf.id">
-           
-         </div>
-       </div>
-     </div> -->
    </div>
  </template>
  
@@ -31,12 +31,7 @@
    name: "ShelvesView",
  
    data: () => ({
-        inShelf: {
-            id: 0,
-            isPrimary: false,
-            name: "",
-            shelfItems: []
-        },
+        showDialog: false,
         shelves: [],
    }),
  
@@ -63,6 +58,20 @@
            console.log(error);
          });
    },
+
+   methods: {
+        addShelf: function() {
+            axios
+                .post("http://localhost:9090/shelves", this.inShelf, {withCredentials: true})
+                .then((res) => {
+                    console.log(res.data);
+                    this.shelves.push(res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+   }
  };
  </script>
  
