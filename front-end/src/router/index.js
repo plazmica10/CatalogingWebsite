@@ -11,7 +11,7 @@ import UserView from '../views/UserView.vue'
 import BookView from '../views/BookView.vue'
 import AuthorRegisterView from '../views/AuthorRegisterView.vue'
 import RequestsView from '../views/RequestsView.vue'
-
+import EditAuthorView from '../views/EditAuthorView.vue'
 const routes = [
   {
     path: '/',
@@ -72,6 +72,11 @@ const routes = [
     path: '/requests',
     name: 'requests',
     component: RequestsView
+  },
+  {
+    path: '/edit-author',
+    name: 'edit-author',
+    component: EditAuthorView
   }
 ]
 

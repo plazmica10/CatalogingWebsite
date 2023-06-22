@@ -50,7 +50,7 @@ public class AuthorController{
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AuthorDto> updateAuthor(@PathVariable(name = "id") Long id, @RequestBody AuthorDto author, HttpSession session) {
+    public ResponseEntity<Author> updateAuthor(@PathVariable(name = "id") Long id, @RequestBody Author author, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
         if (loggedUser == null)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -72,7 +72,7 @@ public class AuthorController{
         if(author.getUsername() != null)
             a.setUsername(author.getUsername());
         authorService.save(a);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(a);
     }
 
 }
