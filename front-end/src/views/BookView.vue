@@ -15,14 +15,14 @@
                             </div>
                         </div>
                         <div class="book-details">
-                            <ul>
-                                <li>Title: {{ this.book.title }}</li>
-                                <li>ISBN: {{ this.book.isbn }}</li>
-                                <li>Date: {{ this.book.date }}</li>
-                                <li>Pages: {{ this.book.pages }}</li>
-                                <li>Description: {{ this.book.description }}</li>
-                                <li>Rating: {{ this.book.rating }}</li>
-                                <li>Genre: {{ this.genre.name }}</li>
+                            <ul class="list-group">
+                                <li class="list-group-item">Title: {{ this.book.title }}</li>
+                                <li class="list-group-item">ISBN: {{ this.book.isbn }}</li>
+                                <li class="list-group-item">Date: {{ this.book.date }}</li>
+                                <li class="list-group-item">Pages: {{ this.book.pages }}</li>
+                                <li class="list-group-item">Description: {{ this.book.description }}</li>
+                                <li class="list-group-item">Rating: {{ this.book.rating }}</li>
+                                <li class="list-group-item">Genre: {{ this.genre.name }}</li>
                             </ul>
                         </div>
                     </div>

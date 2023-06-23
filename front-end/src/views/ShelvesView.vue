@@ -228,7 +228,7 @@
 
         rateBook() {
             console.log("Rating: " + this.rating + ". Review: " + this.review + ".");
-
+                console.log("ID1: " + this.idForReview + ".");
             axios
                 .post("http://localhost:9090/reviews/" + this.idForReview, {rating: this.rating, comment: this.review}, {withCredentials: true})
                 .then((res) => {
@@ -236,9 +236,25 @@
                     this.fetchShelves();
                 })
                 .catch((error) => {
-                    console.error(error);
+                    // console.error(error);
                     this.error = 'An error occurred while adding the review.';
-                    alert("Could not add review.");
+
+                    if (this.rating != null || this.review != null) {
+                        console.log("ID2: " + this.idForReview + ".");
+                        axios
+                        .put("http://localhost:9090/reviews/" + this.idForReview, {rating: this.rating, comment: this.review}, {withCredentials: true})
+                        .then((res) => {
+                            console.log(res.data);
+                            this.fetchShelves();
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                            console.log(error.data);
+                            this.error = 'An error occurred while adding the review.';
+                            alert("Could not add review.");
+                        });
+                    }
+                    
                 });
 
             this.closeRateBook();

@@ -10,7 +10,7 @@
     </div> -->
     <div class="card mb-4 border-dark border-3" style="margin: 10px">
           <div class="card-body text-center">
-            <img :src="user.photo" alt="user photo" style="width: 100px; height: 100px; border-radius: 50%;border: 1px solid #CCC5B9; margin: 10px; display: inline-block"/>
+            <img :src="userPhotoPath(user.photo)" alt="user photo" style="width: 100px; height: 100px; border-radius: 50%;border: 1px solid #CCC5B9; margin: 10px; display: inline-block"/>
             <h5 class="my-3" v-if="user">{{user.name}}</h5>
             <p class="text-muted mb-1" v-if="user">{{user.role}}</p>
             <p class="text-muted mb-4" v-if="user">{{user.email}}</p>
@@ -19,7 +19,7 @@
         </div>
         <div v-if="user.role == 'AUTHOR'">
           <td class="btn btn-dark text-white" style="margin: 5px; display: inline-block;" v-if="this.$store.state.loggedIn && this.$store.state.user.role == 'ADMIN' && user.role =='AUTHOR'"><router-link :to="{ name: 'edit-author', params: { id: user.id }}" style="text-decoration: none; color: white">Edit Author</router-link></td>
-          <button class="btn" style="background-color: #252422; color: white;text-decoration:double;" v-on:click="showSendRequest()">Send request</button>
+          <button v-if="!this.$store.state.loggedIn" class="btn" style="background-color: #252422; color: white;text-decoration:double;" v-on:click="showSendRequest()">Send request</button>
           <dialog class="" id="sendRequest">
             <form @submit.prevent="submitForm">
               <input type="email" v-model="email" placeholder="Email" required>
@@ -30,7 +30,7 @@
           </dialog>
         </div>
         <p v-if="!user">No user found.</p>
-        <button v-if="this.$store.state.loggedIn" class="btn btn-primary" v-on:click="showUpdateUser()">Edit</button>
+        <button v-if="this.$store.state.loggedIn == this.$route.query.id" class="btn btn-primary" v-on:click="showUpdateUser()">Edit</button>
     </div>
 <div class="container">
     <div v-for="shelf in shelves" :key="shelf.id">
@@ -239,7 +239,15 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-    }
+    },
+
+    userPhotoPath(photo) {
+      try {
+        return require(`../assets/${photo}`);
+      } catch (err) {
+        return require("@/assets/user.png");
+      }
+    },
   },
 };
 </script>

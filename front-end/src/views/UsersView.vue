@@ -5,7 +5,7 @@
             <table>
                 <tbody>
                     <tr v-for="user in users" :key="user.id">
-                        <td  @click="viewUser(user.id)"><img :src="user.photo" alt="user photo" style="width: 100px; height: 100px; border-radius: 50%;border: 1px solid #CCC5B9; margin: 10px; display: inline-block"/></td>
+                        <td  @click="viewUser(user.id)"><img :src="userPhotoPath(user.photo)" alt="user image" style="width: 100px; height: 100px; border-radius: 50%;border: 1px solid #CCC5B9; margin: 10px; display: inline-block; cursor: pointer;"/></td>
                         <td>{{ user.username }}</td>
                     </tr>
                 </tbody>
@@ -46,6 +46,16 @@ export default {
       }catch(error){
         console.log(error);
       }
+    },
+    userPhotoPath(photo) {
+      try{
+        if (photo == null) {
+          return require("@/assets/user.png");
+        }
+        return require("@/assets/" + photo);
+    }catch(error){
+      return require("@/assets/user.png");
+    }
     },
   },
 };
