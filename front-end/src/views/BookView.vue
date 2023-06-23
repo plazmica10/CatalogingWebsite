@@ -6,10 +6,7 @@
                 <div class="book-container">
                     <div class="book">
                         <img :src="book.photo">
-                        <!-- <img :src="require(`@/assets/${book.photo}`)"> -->
-                        <!-- <img v-if="isReady" :src="require(this.photoLink)"> -->
-                        <!-- <img :src="photoLink" alt="">
-                        <p>{{ photoLink }}</p> -->
+                        <button class="btn btn-success" v-on:click="showAddToShelf()">Add to shelf</button>
                         <div class="book-details">
                             <ul>
                                 <li>Title: {{ this.book.title }}</li>
@@ -26,6 +23,17 @@
             </div>
         </div>
     </div>
+
+    <dialog class="" id="addToShelf">
+        <h1>Add To Shelf</h1>
+        <form>
+            <select v-model="selectedShelfId">
+                <option v-for="shelf in shelves" :key="shelf.id" :value="shelf.id">{{ shelf.name }}</option>
+            </select>
+            <button type="button" @click="addToShelf(selectedShelfId)">Add to Shelf</button>
+            <button type="button" @click="closeAddToShelf">Cancel</button>
+        </form>
+    </dialog>
 </template>
 
 <script>
@@ -44,32 +52,76 @@ export default {
             photo: "",
             genre: "",
         },
+        shelves: [],
+        selectedShelfId: null,
         photoLink: "",
-        isReady: false,
         genre: {},
+        id: 0,
     }),
     mounted:async function () {
-        const id = this.$route.params.id;
-        axios
-            .get("http://localhost:9090/books/" + id, { withCredentials: true })
-            .then((res) => {
-            console.log(res.data);
-            // this.book = JSON.parse(res.data);
-            this.book = res.data;
-            this.genre = this.book.genre;
-            this.photoLink = '../assets/' + this.book.photo;
-            // console.log(this.photoLink);
-            // console.log(this.book);
-            // console.log(this.genre.name);
-            // this.isReady = true;
-        })
-            .catch((error) => {
-            console.log(error);
-        });
+        this.id = this.$route.params.id;
 
-        // axios
-        //     .get(`http:localhost:9090/genres/${this.book.genre}`)
+        await this.refresh();
+
+        const addToShelfModal = document.getElementById("addToShelf");
+
+        addToShelfModal.addEventListener("click", (e) => {
+            const dialogDimensions = addToShelfModal.getBoundingClientRect();
+            if (e.clientX < dialogDimensions.left || e.clientX > dialogDimensions.right || e.clientY < dialogDimensions.top || e.clientY > dialogDimensions.bottom) {
+                addToShelfModal.close();
+            }
+        });
     },
+
+    methods: {
+        async refresh() {
+            axios
+                .get("http://localhost:9090/books/" + this.id, { withCredentials: true })
+                .then((res) => {
+                // console.log(res.data);
+                this.book = res.data;
+                this.genre = this.book.genre;
+                this.photoLink = '../assets/' + this.book.photo;
+            })
+                .catch((error) => {
+                console.log(error);
+            });
+
+            axios
+                .get("http://localhost:9090/shelves", { withCredentials: true })
+                .then((res) => {
+                this.shelves = res.data;
+                console.log(this.shelves);
+            })
+                .catch((error) => {
+                console.log(error);
+            });
+        },
+
+        addToShelf(shelfId) {
+            // console.log("add to shelf: ", shelfId);
+
+            axios
+                .post("http://localhost:9090/shelfItems/" + this.id + "/" + shelfId, {}, { withCredentials: true })
+                .then((res) => {
+                console.log(res.data);
+                this.refresh();
+            })
+                .catch((error) => {
+                console.log(error);
+                alert("Could not add book to shelf.");
+            });
+
+            this.closeAddToShelf();
+        },
+
+        showAddToShelf() {
+            document.getElementById("addToShelf").showModal();
+        },
+        closeAddToShelf() {
+            document.getElementById("addToShelf").close();
+        },
+    }
 };
 </script>
 
