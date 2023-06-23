@@ -85,23 +85,23 @@ public class BookController {
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book, HttpSession session) {
+    public ResponseEntity<Book> updateBook(@PathVariable(name = "id") Long id, @RequestBody Book book, HttpSession session) {
         User loggedUser = (User) session.getAttribute("user");
         if (loggedUser == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not authorized to update books!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         if (loggedUser.getRole() == ROLE.READER)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not authorized to update books!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         if (loggedUser.getRole() == ROLE.AUTHOR) {
             Author author = authorService.findOne(loggedUser.getId());
             if (author == null)
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not authorized to update books!");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             if (author.getBooks().stream().noneMatch(b -> b.getId().equals(id)))
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You are not authorized to update this book!");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
         Book existingBook = bookService.findOne(id);
         if (existingBook == null)
-            return ResponseEntity.badRequest().body("Book with id: " + id + " does not exist!");
+            return ResponseEntity.badRequest().body(null);
 
         if (book.getTitle() != null)
             existingBook.setTitle(book.getTitle());
@@ -119,7 +119,7 @@ public class BookController {
             existingBook.setPhoto(book.getPhoto());
 
         bookService.save(existingBook);
-        return ResponseEntity.ok("Successfully updated book with id: " + id);
+        return ResponseEntity.ok(existingBook);
 
     }
 

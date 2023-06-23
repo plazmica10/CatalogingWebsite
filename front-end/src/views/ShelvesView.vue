@@ -1,7 +1,7 @@
 <template>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 
-    <div class="container" style="border: 1px solid red;">
+    <div class="container">
      <h1>Shelves</h1>
      <div style="margin-bottom: 0.7em;">
           <button class="btn btn-primary" v-on:click="showAddShelf()">Add Shelf</button>

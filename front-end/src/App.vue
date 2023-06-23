@@ -16,12 +16,15 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/users">Users</a>
           </li>
-          <li class="nav-item" v-if="this.$store.state.loggedIn">
+          <li class="nav-item" v-if="this.$store.state.loggedIn && this.$store.state.user.role != 'ADMIN'">
             <a class="nav-link active" aria-current="page" href="/shelves">Shelves</a>
           </li>
 
           <li class="nav-item" v-if="this.$store.state.user.role == 'ADMIN' && this.$store.state.loggedIn">
             <a class="nav-link active" aria-current="page" href="/create-author">Add Author</a>
+          </li>
+          <li class="nav-item" v-if="this.$store.state.user.role != 'READER' && this.$store.state.loggedIn">
+            <a class="nav-link active" aria-current="page" href="/book-add">Add Book</a>
           </li>
           <li v-if="this.$store.state.user.role == 'ADMIN' && this.$store.state.loggedIn">
             <a class="nav-link active" aria-current="page" href="/requests">Requests</a>
