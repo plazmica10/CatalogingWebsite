@@ -3,24 +3,10 @@
     <div class="row justify-content-center">
         <div class="d-flex justify-content-center">
             <table>
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Name</th>
-                        <th>Surname</th>
-                        <th>Description</th>
-                        <th>Role</th>
-                        <th v-if="this.$store.state.loggedIn && this.$store.state.user.role == 'ADMIN'">Edit</th>
-                    </tr>
-                </thead>
                 <tbody>
                     <tr v-for="user in users" :key="user.id">
-                      <td><a href="#" @click="viewUser(user.id)">{{ user.username }}</a></td>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.surname }}</td>
-                        <td>{{ user.description }}</td>
-                        <td>{{ user.role }}</td>
-                        <td v-if="this.$store.state.loggedIn && this.$store.state.user.role == 'ADMIN' && user.role =='AUTHOR'"><router-link :to="{ name: 'edit-author', params: { id: user.id }}">Edit Author</router-link></td>
+                        <td  @click="viewUser(user.id)"><img :src="user.photo" alt="user photo" style="width: 100px; height: 100px; border-radius: 50%;border: 1px solid #CCC5B9; margin: 10px; display: inline-block"/></td>
+                        <td>{{ user.username }}</td>
                     </tr>
                 </tbody>
             </table>

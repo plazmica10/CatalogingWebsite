@@ -1,4 +1,5 @@
 <template>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <div class="container">
         <h1>Book</h1>
         <div class="row justify-content-center">
@@ -7,10 +8,10 @@
                     <div class="book">
                         <img :src="book.photo">
                         <div class="d-flex justify-content-between">
-                            <button v-if="this.$store.state.loggedIn && this.$store.state.user.role != 'ADMIN'" class="btn btn-success" v-on:click="showAddToShelf()">Add to shelf</button>
+                            <button v-if="this.$store.state.loggedIn && this.$store.state.user.role != 'ADMIN'" class="btn btn-success" v-on:click="showAddToShelf()" style="margin:5px; padding: 5px">Add to shelf</button>
                             <div>
-                                <button v-if="this.$store.state.loggedIn && this.$store.state.user.role == 'ADMIN'" class="btn btn-secondary" v-on:click="showUpdateBook(book.id)">Edit</button>
-                                <button v-if="this.$store.state.loggedIn && this.$store.state.user.role == 'ADMIN'" class="btn btn-danger" v-on:click="deleteBook()">Delete</button>
+                                <button v-if="this.$store.state.loggedIn && this.$store.state.user.role != 'READER'" class="btn btn-secondary" v-on:click="showUpdateBook(book.id)" style="margin:5px; padding: 5px">Edit</button>
+                                <button v-if="this.$store.state.loggedIn && this.$store.state.user.role == 'ADMIN'" class="btn btn-danger" v-on:click="deleteBook()" style="margin:5px; padding: 5px">Delete</button>
                             </div>
                         </div>
                         <div class="book-details">
@@ -30,12 +31,18 @@
                 <h2>Reviews</h2>
                 <div class="kutija" v-for="review in shelfItems.reviews" :key="review.id">
                         <p><b>{{review.user.username}}</b> says: {{review.comment}}</p>
-                        <p>Rating: {{review.rating}}</p>
+                        <div class="starss">
+                            <i class="fa-solid fa-star" v-if="review.rating >=1"></i>
+                            <i class="fa-solid fa-star" v-if="review.rating >=2"></i>
+                            <i class="fa-solid fa-star" v-if="review.rating >=3"></i>
+                            <i class="fa-solid fa-star" v-if="review.rating >=4" ></i>
+                            <i class="fa-solid fa-star" v-if="review.rating >=5"></i>
+                        </div>
                 </div>
-            </div>
             </div>
         </div>
     </div>
+</div>
 
     <dialog class="" id="addToShelf">
         <h1>Add To Shelf</h1>
@@ -59,6 +66,7 @@
         </form>
         <button v-on:click="closeUpdateShelf()">Close</button>
     </dialog>
+    
 </template>
 
 <script>
@@ -229,11 +237,15 @@ export default {
 .reviews{
     display: inline-block;
     margin: 1%;
-    border: 1px solid black;
-    width: 300px;
 }
 .kutija{
     border: 1px solid black;
-    margin: 1%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 15px;
+}
+.starss i{
+    color: #ff9c1a;
+    font-size: 20px;
 }
 </style>

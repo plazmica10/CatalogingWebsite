@@ -59,7 +59,7 @@ public class DatabaseConfiguration {
         shelfRepository.save(s11);
         shelfRepository.save(s12);
         shelfRepository.save(s13);
-        User u1 = new User("test", "John", "Doe", "john@gmail.com", "123", LocalDate.of(1913, 6, 9), "photo", "desc", ROLE.READER);
+        User u1 = new User("test", "John", "Doe", "john@gmail.com", "123", LocalDate.of(1913, 6, 9), "https://s.gr-assets.com/assets/nophoto/user/u_225x300-c928cbb998d4ac6dd1f0f66f31f74b81.png", "desc", ROLE.READER);
         shelves = new ArrayList<>();
         shelves.add(s11);
         shelves.add(s12);
@@ -73,7 +73,7 @@ public class DatabaseConfiguration {
         shelfRepository.save(s21);
         shelfRepository.save(s22);
         shelfRepository.save(s23);
-        User u2 = new User("user", "Mike", "Oxlong", "mikey@gmail.com", "123", LocalDate.of(1913, 6, 9), "photo", "desc", ROLE.READER);
+        User u2 = new User("user", "Mike", "Oxlong", "mikey@gmail.com", "123", LocalDate.of(1913, 6, 9), "https://s.gr-assets.com/assets/nophoto/user/u_225x300-c928cbb998d4ac6dd1f0f66f31f74b81.png", "desc", ROLE.READER);
         shelves = new ArrayList<>();
         shelves.add(s21);
         shelves.add(s22);
@@ -88,7 +88,7 @@ public class DatabaseConfiguration {
         shelfRepository.save(s31);
         shelfRepository.save(s32);
         shelfRepository.save(s33);
-        Author auth1 = new Author("daisyMeRollin", "Joanne", "Rowling", "misBigJ@gmail.com", "pass123", LocalDate.of(1913, 6, 9), "photo", "desc", ROLE.AUTHOR, true);
+        Author auth1 = new Author("daisyMeRollin", "Joanne", "Rowling", "misBigJ@gmail.com", "pass123", LocalDate.of(1913, 6, 9), "https://s.gr-assets.com/assets/nophoto/user/u_225x300-c928cbb998d4ac6dd1f0f66f31f74b81.png", "desc", ROLE.AUTHOR, true);
         shelves = new ArrayList<>();
         shelves.add(s31);
         shelves.add(s32);
@@ -102,7 +102,7 @@ public class DatabaseConfiguration {
         shelfRepository.save(s41);
         shelfRepository.save(s42);
         shelfRepository.save(s43);
-        Author auth2 = new Author("tolkien", "John", "Ronald Reuel Tolkien", "tolkien@gmail.com", "pass123", LocalDate.of(1965, 7, 31), "photo", "desc", ROLE.AUTHOR, true);
+        Author auth2 = new Author("tolkien", "John", "Ronald Reuel Tolkien", "tolkien@gmail.com", "pass123", LocalDate.of(1965, 7, 31), "https://s.gr-assets.com/assets/nophoto/user/u_225x300-c928cbb998d4ac6dd1f0f66f31f74b81.png", "desc", ROLE.AUTHOR, true);
         shelves = new ArrayList<>();
         shelves.add(s41);
         shelves.add(s42);
@@ -111,7 +111,7 @@ public class DatabaseConfiguration {
         authorRepository.save(auth2);
 
         // ADMINS
-        User admin1 = new User("Shef", "Gordon", "Ramsay", "admin@gmail.com", "123", LocalDate.of(1913, 6, 9), "photo", "desc", ROLE.ADMIN);
+        User admin1 = new User("Shef", "Gordon", "Ramsay", "admin@gmail.com", "123", LocalDate.of(1913, 6, 9), "https://s.gr-assets.com/assets/nophoto/user/u_225x300-c928cbb998d4ac6dd1f0f66f31f74b81.png", "desc", ROLE.ADMIN);
         userRepository.save(admin1);
 
         // BOOKS

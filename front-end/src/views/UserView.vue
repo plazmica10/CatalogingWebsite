@@ -1,9 +1,24 @@
 <template>
-    <div>
+  <div class="col-lg-2 mx-auto">
+    <!-- <div style="border: 1px solid red; padding: 50px" class=""> 
+      <img :src="user.photo" alt="user photo" style="width: 100px; height: 100px; border-radius: 50%;border: 1px solid #CCC5B9; margin: 10px; display: inline-block"/>
+      <div style="display: inline-block; vertical-align: top; margin-left: 10px;">
         <h1 v-if="user">{{ user.name }}</h1>
         <p v-if="user">Email: {{ user.email }}</p>
         <p v-if="user">Role: {{ user.role }}</p>
+      </div>
+    </div> -->
+    <div class="card mb-4 border-dark border-3" style="margin: 10px">
+          <div class="card-body text-center">
+            <img :src="user.photo" alt="user photo" style="width: 100px; height: 100px; border-radius: 50%;border: 1px solid #CCC5B9; margin: 10px; display: inline-block"/>
+            <h5 class="my-3" v-if="user">{{user.name}}</h5>
+            <p class="text-muted mb-1" v-if="user">{{user.role}}</p>
+            <p class="text-muted mb-4" v-if="user">{{user.email}}</p>
+
+          </div>
+        </div>
         <div v-if="user.role == 'AUTHOR'">
+          <td class="btn btn-dark text-white" style="margin: 5px; display: inline-block;" v-if="this.$store.state.loggedIn && this.$store.state.user.role == 'ADMIN' && user.role =='AUTHOR'"><router-link :to="{ name: 'edit-author', params: { id: user.id }}" style="text-decoration: none; color: white">Edit Author</router-link></td>
           <button class="btn" style="background-color: #252422; color: white;text-decoration:double;" v-on:click="showSendRequest()">Send request</button>
           <dialog class="" id="sendRequest">
             <form @submit.prevent="submitForm">

@@ -41,6 +41,7 @@ public class AuthorController{
 
         Author newAuthor = new Author();
         newAuthor.setActive(false);
+        newAuthor.setPhoto("https://s.gr-assets.com/assets/nophoto/user/u_225x300-c928cbb998d4ac6dd1f0f66f31f74b81.png");
         newAuthor.setRole(ROLE.AUTHOR);
         newAuthor.setName(autor.getName());
         newAuthor.setSurname(autor.getSurname());
