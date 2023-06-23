@@ -10,7 +10,7 @@
                         <th>Surname</th>
                         <th>Description</th>
                         <th>Role</th>
-                        <th>Edit</th>
+                        <th v-if="this.$store.state.loggedIn && this.$store.state.user.role == 'ADMIN'">Edit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,7 +20,7 @@
                         <td>{{ user.surname }}</td>
                         <td>{{ user.description }}</td>
                         <td>{{ user.role }}</td>
-                        <td v-if="user.role=='AUTHOR'"><router-link :to="{ name: 'edit-author', params: { id: user.id }}">Edit Author</router-link></td>
+                        <td v-if="this.$store.state.loggedIn && this.$store.state.user.role == 'ADMIN' && user.role =='AUTHOR'"><router-link :to="{ name: 'edit-author', params: { id: user.id }}">Edit Author</router-link></td>
                     </tr>
                 </tbody>
             </table>

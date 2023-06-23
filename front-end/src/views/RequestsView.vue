@@ -2,9 +2,9 @@
     <div>
         <h1>Requests</h1>
         <div class="okvir" v-for="request in requests" :key="request.id">
-            {{ request.email}}
-            {{ request.user.name }}
-            {{ request.user.surname }}
+            <div>Email: {{ request.email }}</div>
+            <div>Name: {{ request.user.name }}</div>
+            <div>Surname: {{ request.user.surname }}</div>
             <button class="btn btn-success" name="approve" style="margin: 5px" @click="approveRequest(request.id)">Approve</button>
             <button class="btn btn-danger" name="deny" style="margin: 5px" @click="denyRequest(request.id)">Deny</button>
         </div>
@@ -83,11 +83,13 @@ export default{
 <style>
 
 .okvir{
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
-    border: 1px solid black;
+    align-items: center; */
+    border: 1px solid #CCC5B9;
+    border-radius: 10px;
     margin: 10px;
     padding: 10px;
+    display: inline-block;
 }
 </style>

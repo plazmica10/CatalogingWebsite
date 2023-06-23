@@ -1,5 +1,5 @@
 <template>
-    <div class="container" style="border: 1px solid red;">
+    <div class="container">
      <h1>Books</h1>
      <div class="row justify-content-center">
        <div class="d-flex justify-content-center">

@@ -4,13 +4,13 @@
         <p v-if="user">Email: {{ user.email }}</p>
         <p v-if="user">Role: {{ user.role }}</p>
         <div v-if="user.role == 'AUTHOR'">
-          <button class="btn" style="background-color: #252422; color: white;text-decoration:double;" @click="showDialog = true; console.log(showDialog)">Send request</button>
-          <dialog v-if="showDialog" role="dialog" aria-modal="true" open>
+          <button class="btn" style="background-color: #252422; color: white;text-decoration:double;" v-on:click="showSendRequest()">Send request</button>
+          <dialog class="" id="sendRequest">
             <form @submit.prevent="submitForm">
               <input type="email" v-model="email" placeholder="Email" required>
               <input type="phone" v-model="phone" placeholder="Phone">
               <input type="text" v-model="message" placeholder="Message">
-              <button type="submit">Send</button>
+              <button type="submit" v-on:click="closeRequest()">Send</button>
             </form>
           </dialog>
         </div>
@@ -94,6 +94,7 @@ export default {
          .catch((error) => {
            console.log(error);
          });
+    const sendRequest = document.getElementById("sendRequest");
   },
   methods: {
     submitForm() {
@@ -111,6 +112,20 @@ export default {
           console.log(error);
         });
     },
+    showSendRequest() {
+      const sendRequest = document.getElementById("sendRequest");
+      sendRequest.addEventListener("click", (e) => {
+            const dialogDimensions = sendRequest.getBoundingClientRect();
+            if (e.clientX < dialogDimensions.left || e.clientX > dialogDimensions.right || e.clientY < dialogDimensions.top || e.clientY > dialogDimensions.bottom) {
+              sendRequest.close();
+            }
+        });
+      sendRequest.showModal();
+    },
+    closeRequest() {
+      const sendRequest = document.getElementById("sendRequest");
+      sendRequest.close();
+    }
   },
 };
 </script>
