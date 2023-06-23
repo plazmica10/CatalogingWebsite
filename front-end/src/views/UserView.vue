@@ -15,8 +15,9 @@
           </dialog>
         </div>
         <p v-if="!user">No user found.</p>
+        <button v-if="this.$store.state.loggedIn" class="btn btn-primary" v-on:click="showUpdateUser()">Edit</button>
     </div>
-<div class="container" style="border: 1px solid red;">
+<div class="container">
     <div v-for="shelf in shelves" :key="shelf.id">
       <ul class="list-group">
         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -31,6 +32,54 @@
       </ul>
     </div>
 </div>
+
+
+<dialog id="updateUserfModal" style="width: 40%;">
+    <h1>Update User</h1>
+    <!-- <div v-if="error" class="alert alert-danger mx-2">
+                {{ error }}
+            </div> -->
+    <form @submit.prevent="updateUser()">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input v-model="user.name" type="text" class="form-control" id="name">
+      </div>
+      <div class="mb-3">
+        <label for="surname" class="form-label">Surname</label>
+        <input v-model="user.surname" type="text" class="form-control" id="surname">
+      </div>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input v-model="user.username" type="text" class="form-control" id="username">
+      </div>
+      <div class="mb-3">
+        <label for="date" class="form-label">Bith date</label>
+        <input v-model="user.date" type="date" class="form-control" id="date">
+      </div>
+      <div class="mb-3">
+        <label for="photo" class="form-label">Photo</label>
+        <input v-model="user.photo" type="text" class="form-control" id="photo">
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea v-model="user.description" class="form-control" id="description"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input v-model="user.email" type="email" class="form-control" id="email">
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input v-model="user.password" type="password" class="form-control" id="password">
+      </div>
+      <div class="mb-3">
+        <label for="passwordConf" class="form-label">Confirm password</label>
+        <input v-model="confirmPass" type="password" class="form-control" id="passwordConf">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <button v-on:click="closeUpdateUser()">Close</button>
+</dialog>
 </template>
 
 <script>
@@ -58,30 +107,53 @@ export default {
       email: "",
       description: "",
       role: "",
-      shelves: []
-    }
+      shelves: [],
+      date: null,
+      photo: "",
+      password: "",
+    },
+    confirmPass: "",
+    error: "",
   }),
+
+  computed: {
+    passwordsMatch() {
+        if (this.user.password !== this.confirmPass) {
+            this.error = 'Passwords do not match';
+            return false;
+        } else {
+            this.error = '';
+            return true;
+        }
+    }
+  },
+
   mounted: function() {
 
-    const userId = this.$route.params.id;
+    // const userId = this.$route.params.id;
+    const userId = this.$route.query.id;
+
     axios
         .get("http://localhost:9090/users/" + userId, {withCredentials: true})
         .then((res) => {
             this.user = res.data;
+            this.newUser = new Object(this.user);
             // console.log(this.user);
         })
         .catch((error) => {
         console.log(error);
         });
+
     axios
-         .get("http://localhost:9090/shelves", {withCredentials: true})
+         .get("http://localhost:9090/shelves/user/" + userId)
          .then((res) => {
             this.shelves = res.data;
+            this.shelves.
             console.log(this.shelves);
 
             this.shelves.forEach(shelf => {
-    axios
-                .get("http://localhost:9090/shelves/" + shelf.id, {withCredentials: true})
+              axios
+                .get("http://localhost:9090/shelves/" + userId, {withCredentials: true})
                 .then((res) => {
                     shelf.shelfItems = res.data.shelfItems;
                     console.log(shelf.shelfItems);
@@ -125,6 +197,33 @@ export default {
     closeRequest() {
       const sendRequest = document.getElementById("sendRequest");
       sendRequest.close();
+    },
+
+    showUpdateUser() {
+      const updateUserfModal = document.getElementById("updateUserfModal");
+      updateUserfModal.addEventListener("click", (e) => {
+            const dialogDimensions = updateUserfModal.getBoundingClientRect();
+            if (e.clientX < dialogDimensions.left || e.clientX > dialogDimensions.right || e.clientY < dialogDimensions.top || e.clientY > dialogDimensions.bottom) {
+              updateUserfModal.close();
+            }
+        });
+      updateUserfModal.showModal();
+    },
+    closeUpdateUser() {
+      const updateUserfModal = document.getElementById("updateUserfModal");
+      updateUserfModal.close();
+    },
+
+    updateUser() {
+      axios
+        .put(`http://localhost:9090/users/${this.user.id}`, this.user, { withCredentials: true })
+        .then((res) => {
+          window.alert("User updated!");
+          this.showDialog = false;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   },
 };
