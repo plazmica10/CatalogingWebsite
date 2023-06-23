@@ -88,7 +88,8 @@ export default {
         });
     },
     userPage: function() {
-      this.$router.push({name: "UserView", params: {id: this.$store.state.user.id}});
+      // this.$router.push({name: "UserView", params: {id: this.$store.state.user.id}});
+      this.$router.push("/user?id=" + this.$store.state.user.id);
     }
   }
 }

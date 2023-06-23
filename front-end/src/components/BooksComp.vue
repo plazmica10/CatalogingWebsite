@@ -23,7 +23,8 @@ export default {
   props: ["books"],
   methods: {
     bookDetails(book) {
-      this.$router.push({name: "book", params: {id: book.id}});
+      // this.$router.push({name: "book", params: {id: book.id}});
+      this.$router.push("/book?id=" + book.id);
     },
   },
 };
