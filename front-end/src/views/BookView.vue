@@ -26,6 +26,13 @@
                         </div>
                     </div>
                 </div>
+            <div class="reviews">
+                <h2>Reviews</h2>
+                <div class="kutija" v-for="review in shelfItems.reviews" :key="review.id">
+                        <p><b>{{review.user.username}}</b> says: {{review.comment}}</p>
+                        <p>Rating: {{review.rating}}</p>
+                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -75,6 +82,12 @@ export default {
         newDate: "",
         newPhoto: "",
         shelves: [],
+        shelfItems: [
+            {
+                book:null,
+                reviews: [],
+            }
+        ],
         selectedShelfId: null,
         photoLink: "",
         genre: {},
@@ -126,6 +139,16 @@ export default {
                 .catch((error) => {
                 console.log(error);
             });
+
+            axios
+                .get("http://localhost:9090/shelfItems/" + this.id, { withCredentials: true })
+                .then((res) => {
+                    this.shelfItems = res.data;
+                     console.log(this.shelfItems);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
 
         addToShelf(shelfId) {
@@ -203,4 +226,14 @@ export default {
     display: inline-block;
     margin: 1%;
   }
+.reviews{
+    display: inline-block;
+    margin: 1%;
+    border: 1px solid black;
+    width: 300px;
+}
+.kutija{
+    border: 1px solid black;
+    margin: 1%;
+}
 </style>
