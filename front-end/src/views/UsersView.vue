@@ -55,7 +55,8 @@ export default {
   methods: {
     viewUser: function (userId) {
       try{
-        this.$router.push({ name: "UserView", params: { id: userId } });
+        // this.$router.push({ name: "UserView", params: { id: userId } });
+        this.$router.push("/user?id=" + userId);
       }catch(error){
         console.log(error);
       }

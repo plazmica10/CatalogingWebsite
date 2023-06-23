@@ -43,6 +43,21 @@ public class ShelfController {
         return ResponseEntity.ok(dtos);
     }
 
+    //READ SHELVES BY USER ID
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<ShelfDto>> getShelvesByUserId(@PathVariable Long id){
+        User user = userService.findOne(id);
+        List<Shelf> shelves = user.getShelves();
+
+        List<ShelfDto> dtos = new ArrayList<>();
+        for(Shelf s : shelves){
+            ShelfDto dto = new ShelfDto(s);
+            dtos.add(dto);
+        }
+
+        return ResponseEntity.ok(dtos);
+    }
+
     //READ ONE
     @GetMapping("/{id}")
     public ResponseEntity<Shelf> getShelf(@PathVariable Long id, HttpSession session){

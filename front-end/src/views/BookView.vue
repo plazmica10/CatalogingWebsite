@@ -94,7 +94,8 @@ export default {
         id: 0,
     }),
     mounted:async function () {
-        this.id = this.$route.params.id;
+        // this.id = this.$route.params.id;
+        this.id = this.$route.query.id;
 
         await this.refresh();
 
