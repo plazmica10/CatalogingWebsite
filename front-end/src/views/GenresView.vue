@@ -1,27 +1,17 @@
 <template>
     <div>
-        <button v-if="this.$store.state.user.role == 'ADMIN'" class="btn" style="background-color: #252422; color: white;text-decoration:double;height: 3em;margin:10px;" @click="showDialog = !showDialog">Add Genre</button>
+        <button v-if="this.$store.state.user.role == 'ADMIN' && this.$store.state.loggedIn" class="btn" style="background-color: #252422; color: white;text-decoration:double;height: 3em;margin:10px;" @click="showDialog = !showDialog">Add Genre</button>
                 <dialog v-if="showDialog" role="dialog" aria-modal="true" open>
                     <form @submit.prevent="submit">
                         <input type="text" v-model="name" placeholder="Name" required>
                         <button type="submit">Add</button>
                 </form>
             </dialog>
-        <div class="row justify-content-center">
-        <div class="d-flex justify-content-center">
-            <table>
-            <thead>
-            <tr>
-                <th>Genres</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="genre in genres" :key="genre.id">
-                <td>{{ genre.name }}</td>
-            </tr>
-            </tbody>
-            </table>
-        </div>
+            <h2>Genres</h2>
+        <div class="card mx-auto bg-dark" style="width: 18rem;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" v-for="genre in genres" :key="genre.id">{{ genre.name }}</li>
+          </ul>
         </div>
     </div>
 </template>
