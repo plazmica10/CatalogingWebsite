@@ -104,6 +104,12 @@ public class ShelfController {
 
             List<Shelf> shelves = loggedUser.getShelves();
             for (Shelf s : shelves) {
+                if (s.getName().equals(updatedShelf.getName())) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Shelf with that name already exists");
+                }
+            }
+
+            for (Shelf s : shelves) {
                 if (s.getId().equals(id)) {
                     if (s.isPrimary()) {
                         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Cannot update primary shelf");
