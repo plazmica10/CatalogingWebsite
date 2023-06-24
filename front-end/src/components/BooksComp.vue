@@ -6,7 +6,7 @@
          <div class="book-container" v-for="book in books" :key="book.id">
            <div class="book">
              <!-- <img :src="require('@/assets/' + book.photo)"> -->
-              <img :src="book.photo">
+              <img :src="book.photo" v-on:click="bookDetails(book)" style="cursor: pointer;">
              <div v-on:click="bookDetails(book)" class="book-details">
                {{ book.title }}
              </div>
