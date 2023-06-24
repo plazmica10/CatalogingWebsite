@@ -1,7 +1,7 @@
 <template>
     <div>
         <button v-if="this.$store.state.user.role == 'ADMIN' && this.$store.state.loggedIn" class="btn" style="background-color: #252422; color: white;text-decoration:double;height: 3em;margin:10px;" @click="showDialog = !showDialog">Add Genre</button>
-                <dialog v-if="showDialog" role="dialog" aria-modal="true" open>
+                <dialog v-if="showDialog" role="dialog" aria-modal="true" open style="z-index: 9999;">
                     <form @submit.prevent="submit">
                         <input type="text" v-model="name" placeholder="Name" required>
                         <button type="submit">Add</button>
