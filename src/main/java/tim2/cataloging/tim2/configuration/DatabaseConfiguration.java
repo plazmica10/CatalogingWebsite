@@ -150,17 +150,6 @@ public class DatabaseConfiguration {
         auth1.setBooks(books);
         authorRepository.save(auth1);
 
-        Book b4 = new Book("123123123", "Harry Potter and the Prisoner of Azkaban", "", LocalDate.of(1954, 8,29), 423, "desc", 0);
-        b4.setGenre(g5);
-        bookRepository.save(b4);
-        ShelfItem si4 = new ShelfItem(b4);
-        shelfItemRepository.save(si4);
-        books = auth1.getBooks();
-        if (books == null) books = new ArrayList<Book>();
-        books.add(b4);
-        auth1.setBooks(books);
-        authorRepository.save(auth1);
-
         return true;
     }
 }
