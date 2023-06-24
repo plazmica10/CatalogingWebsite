@@ -30,7 +30,7 @@
           </dialog>
         </div>
         <p v-if="!user">No user found.</p>
-        <button v-if="this.$store.state.loggedIn == this.$route.query.id" class="btn btn-primary" v-on:click="showUpdateUser()">Edit</button>
+        <button v-if="this.$store.state.user.id == this.$route.query.id" class="btn btn-primary" v-on:click="showUpdateUser()">Edit</button>
     </div>
 <div class="container">
     <div v-for="shelf in shelves" :key="shelf.id">
