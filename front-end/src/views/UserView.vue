@@ -114,6 +114,7 @@ export default {
       name: "",
       shelfItems: []
     },
+    file: null,
     shelves: [],
     user:{
       username: "",

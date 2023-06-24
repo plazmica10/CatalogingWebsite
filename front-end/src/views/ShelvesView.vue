@@ -83,6 +83,8 @@
         shelves: [],
         rating: 0,
         review: "",
+        reviews: [],
+        reviewUpdateId: 0,
    }),
  
    mounted: function() {
@@ -237,12 +239,27 @@
                 })
                 .catch((error) => {
                     // console.error(error);
-                    this.error = 'An error occurred while adding the review.';
+                    // this.error = 'An error occurred while adding the review.';
 
                     if (this.rating != null || this.review != null) {
-                        console.log("ID2: " + this.idForReview + ".");
                         axios
-                        .put("http://localhost:9090/reviews/" + this.idForReview, {rating: this.rating, comment: this.review}, {withCredentials: true})
+                        .get("http://localhost:9090/shelfItems/" + this.idForReview, { withCredentials: true })
+                        .then((res) => {
+                            this.reviews = res.data.reviews;
+                            console.log(this.reviews);
+                            for (let i = 0; i < this.reviews.length; i++) {
+                                let userrr = this.reviews[i].user;
+                                // console.log("kita:");
+                                // console.log(this.reviews[i].id);
+                                // console.log("kita");
+                                if (userrr.id == this.$store.state.user.id) {
+                                    this.reviewUpdateId = this.reviews[i].id;
+                                    console.log("ID3: " + this.reviewUpdateId + ".");
+                                }
+
+                                console.log("ID2: " + this.idForReview + ".");
+                        axios
+                        .put("http://localhost:9090/reviews/" + this.reviewUpdateId, {rating: this.rating, comment: this.review}, {withCredentials: true})
                         .then((res) => {
                             console.log(res.data);
                             this.fetchShelves();
@@ -253,6 +270,14 @@
                             this.error = 'An error occurred while adding the review.';
                             alert("Could not add review.");
                         });
+                            }
+                            console.log(this.reviews);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                        
+                        
                     }
                     
                 });
