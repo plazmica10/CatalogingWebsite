@@ -34,3 +34,4 @@ build/
 src/main/java/tim2/cataloging/tim2/configuration/CorsRunner.java
 ### VS Code ###
 .vscode/
+.env
